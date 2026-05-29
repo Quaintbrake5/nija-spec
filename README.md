@@ -22,7 +22,7 @@ NaijaSpec is a **Nigeria-first Compliance-as-Code architectural auditing engine*
 │  Markdown Parse → Credential Sanitize → Header Validation   │
 ├─────────────────────────────────────────────────────────────┤
 │  Phase 1: Local Semantic Extraction                         │
-│  Ollama/Qwen (JSON-mode) ←── 3-strike RetryLoop            │
+│  Ollama/Qwen (JSON-mode) ←── 3-strike RetryLoop             │
 │  (or --skip-llm → MockExtractor)                            │
 ├─────────────────────────────────────────────────────────────┤
 │  Phase 2: Compliance Gap Analysis                           │
