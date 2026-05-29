@@ -2,10 +2,6 @@
   "name": "nija-audit",
   "version": "1.0.0",
   "description": "Nigeria-first Compliance-as-Code architectural auditing engine",
-  "main": "dist/bin/nija.js",
-  "directories": {
-    "doc": "docs"
-  },
   "scripts": {
     "build": "tsc",
     "dev": "ts-node bin/nija.ts",

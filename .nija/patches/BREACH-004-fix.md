@@ -1,2 +1,2 @@
-## Remediation for BREACH-004
-Please review the regulatory requirement and update the architecture spec.
+## Data Residency (Remediation)
+Sensitive PII data must be migrated to a Nigerian datacenter. Standard Contractual Clauses (SCCs) must be implemented for any remaining cross-border data transfers, as required by NDPA Article 2.10.

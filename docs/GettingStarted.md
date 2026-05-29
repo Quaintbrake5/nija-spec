@@ -31,14 +31,10 @@ This separation ensures:
 
 #### Prerequisites
 - Node.js (v18+)
-- Access to an LLM provider (Gemini recommended for MVP)
+- Ollama (optional — for local LLM extraction)
 
 #### Installation
 ```bash
-# Install NijaSpec CLI (when available)
-npm install -g nijaspec
-
-# Or clone and run directly from source
 git clone <repository-url>
 cd NaijaSpec
 npm install
@@ -46,31 +42,24 @@ npm install
 
 #### Basic Workflow
 
-1. **Initialize a project**
+1. **Run an audit with mock extractor** (no Ollama needed)
    ```bash
-   nijaspec init
-   ```
-   Creates configuration files and a sample spec template.
-
-2. **Create your specification**
-   Start with raw requirements (from WhatsApp chats, meetings, etc.):
-   ```bash
-   nijaspec spec from-text --input ./requirements.txt --output ./nijaspec.md
+   npm run check -- test-spec.md --skip-llm
    ```
 
-3. **Generate verification tests**
+2. **Run an audit with local Ollama** (requires `ollama pull qwen2.5:7b`)
    ```bash
-   nijaspec generate --input ./nijaspec.md --output ./tests/ --framework jest
+   npm run check -- test-spec.md
    ```
 
-4. **Run the tests**
+3. **View generated patches**
    ```bash
-   nijaspec verify --tests ./tests/
+   cat .nija/patches/BREACH-002-fix.md
    ```
 
-5. **Estimate costs before running**
+4. **Run the test suite**
    ```bash
-   nijaspec estimate --spec ./nijaspec.md
+   npm test
    ```
 
 ### Key Features

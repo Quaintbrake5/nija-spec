@@ -46,6 +46,11 @@ Save the following content to a file named `test-spec.md`:
 # Data Lifecycle
 - PII Categories: BVN, Phone
 - Retention: None
+
+# Audit Metadata
+- Author: System Architect
+- Version: 1.0.0
+- Classification: FINTECH
 ```
 
 ### Run the Audit

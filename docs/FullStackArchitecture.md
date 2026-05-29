@@ -15,6 +15,11 @@ To keep the project “startup-grade” (not brittle), treat the system as **thr
 2. **Web (React + Vite + CSS3)** — dashboard UX (optional v1+).
 3. **API (FastAPI)** — auth, org/project management, run history, billing hooks (optional v1+).
 
+> **Implementation Status:**
+> - ✅ CLI (Node/TypeScript) — Implemented as `nija-audit`
+> - ❌ Web (React + Vite) — Not started
+> - ❌ API (FastAPI) — Not started
+
 ---
 
 ## 2) Suggested Repository Structure (Monorepo)

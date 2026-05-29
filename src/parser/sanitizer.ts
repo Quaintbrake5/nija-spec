@@ -6,8 +6,8 @@ export class Sanitizer {
   static sanitize(content: string): string {
     // Regex for common secret patterns (API keys, tokens, passwords)
     const secretPatterns = [
-      /(?:key|token|secret|password|auth)\s*[:=]\s*['"][a-zA-Z0-9_\-]{16,}/gi,
-      /([a-zA-Z0-9]{20,})[=]{0,2}/g, // Generic long alphanumeric strings
+      /(?:key|token|secret|password|auth)\w*\s*[:=]\s*['"]?[a-zA-Z0-9_\-]{16,}['"]?/gi,
+      /([a-zA-Z0-9]{32,})[=]{0,2}/g, // Generic long alphanumeric strings
       /sk_[a-zA-Z0-9]{32,}/g,        // Common secret key prefix
     ];
 

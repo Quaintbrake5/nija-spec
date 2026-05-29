@@ -1,2 +1,2 @@
-## Remediation for BREACH-005
-Please review the regulatory requirement and update the architecture spec.
+## Multi-Factor Authentication (Remediation)
+MFA must be enabled for all user-facing endpoints and administrative access, as required by CBN Cybersecurity Framework Section 4.1.

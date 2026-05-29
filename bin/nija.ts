@@ -18,8 +18,43 @@ const ndpaRules = JSON.parse(fs.readFileSync(path.join(schemasDir, 'ndpa-rules.j
 const cbnRules = JSON.parse(fs.readFileSync(path.join(schemasDir, 'cbn-rules.json'), 'utf8'));
 const allRules = [...ndpaRules, ...cbnRules];
 
+function getArgValue(args: string[], flag: string): string | undefined {
+  const idx = args.indexOf(flag);
+  if (idx !== -1 && idx + 1 < args.length) {
+    return args[idx + 1];
+  }
+  return undefined;
+}
+
 async function main(): Promise<void> {
   const args: string[] = process.argv.slice(2);
+
+  if (args.includes('--help') || args.includes('-h')) {
+    console.log(`nija-audit v1.0.0 — Nigeria-first Compliance-as-Code Architectural Auditing Engine
+
+Validates an architecture specification against Nigerian regulatory frameworks (NDPA, CBN).
+
+Usage:
+  nija-audit check <path-to-spec.md> [options]
+
+Options:
+  --skip-llm       Use deterministic mock extractor instead of local LLM
+  --endpoint URL   Ollama endpoint (default: http://localhost:11434/api/generate)
+  --model NAME     Ollama model name (default: qwen2.5:7b)
+  --help, -h       Show this help message
+  --version, -v    Show version number
+
+Examples:
+  nija-audit check test-spec.md --skip-llm
+  nija-audit --help`);
+    process.exit(0);
+  }
+
+  if (args.includes('--version') || args.includes('-v')) {
+    console.log('nija-audit v1.0.0');
+    process.exit(0);
+  }
+
   const command: string | undefined = args[0];
   const filePath: string | undefined = args[1];
 
@@ -35,6 +70,10 @@ async function main(): Promise<void> {
 
     // Phase 0: Iron Gate
     console.log('[GATE]   Parsing Markdown AST...                ✓');
+    if (!fs.existsSync(filePath)) {
+      console.error(`❌ Error: File not found: ${filePath}`);
+      process.exit(1);
+    }
     const rawContent: string = fs.readFileSync(filePath, 'utf8');
     const { ast } = MdParser.parse(rawContent);
 
@@ -55,6 +94,8 @@ async function main(): Promise<void> {
 
     // Phase 1: Local Semantic Extraction
     const skipLlm = process.argv.includes('--skip-llm') || process.env.NIJA_SKIP_LLM === 'true';
+    const endpoint = getArgValue(args, '--endpoint') || process.env.NIJA_OLLAMA_ENDPOINT || 'http://localhost:11434/api/generate';
+    const model = getArgValue(args, '--model') || process.env.NIJA_OLLAMA_MODEL || 'qwen2.5:7b';
 
     let extractedData: Record<string, any>;
     if (skipLlm) {
@@ -62,12 +103,12 @@ async function main(): Promise<void> {
       extractedData = MockExtractor.extract(sanitized);
     } else {
       console.log('[LOCAL]  Running local semantic extraction...   ✓');
-      const model = new LocalModel({
-        endpoint: 'http://localhost:11434/api/generate',
-        model: 'qwen2.5:7b'
+      const localModel = new LocalModel({
+        endpoint: endpoint,
+        model: model
       });
       extractedData = await RetryLoop.execute(() =>
-        model.extract(`Extract compliance data from: ${sanitized}`, {})
+        localModel.extract(`Extract compliance data from: ${sanitized}`, {})
       );
     }
 

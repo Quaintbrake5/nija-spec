@@ -6,6 +6,12 @@
 **Date:** May 22, 2026  
 **Audience:** Founder, Technical Co-Maintainers, Early Engineers
 
+> **Implementation Status:**
+> - ✅ Local LLM extraction (Ollama/Qwen) — Implemented
+> - ✅ Mock extractor for offline/CI — Implemented
+> - ❌ Gemini 2.5 Flash integration — Not implemented
+> - ❌ Cloud fallback routing — Not implemented
+
 ---
 
 ## Executive Summary

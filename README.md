@@ -1,8 +1,8 @@
 # NaijaSpec — Documentation Index
 
 **Project:** NaijaSpec / nija-audit v1.0.0
-**Last updated:** 2026-05-29
-**Status:** Early prototype — functional `check` pipeline, documentation-heavy
+**Last updated:** 2026-05-30
+**Status:** Functional CLI engine — 6-breach detection, template remediation, 65 passing tests
 
 ---
 
@@ -33,7 +33,7 @@ NaijaSpec is a **Nigeria-first Compliance-as-Code architectural auditing engine*
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Pipeline command:** `npm run check -- <spec.md> [--skip-llm]`
+**Pipeline command:** `npm run check -- <spec.md> [--skip-llm] [--endpoint URL] [--model NAME]`
 
 ---
 
@@ -65,59 +65,59 @@ bin/nija.ts                              CLI entry point — orchestrates the fu
 
 | Doc | Description |
 |-----|-------------|
-| [PRD.md](./PRD.md) | Product Requirements — target users, MVP goals, CLI commands, success metrics, risks |
-| [AppFlow.md](./AppFlow.md) | CLI and CI workflow documentation — first run, chat-to-spec wizard, self-heal loops |
-| [GettingStarted.md](./GettingStarted.md) | 10-minute contributor walkthrough — prerequisites, setup, basic commands |
-| [Roadmap.md](./Roadmap.md) | Milestone plan — v0 (MVP), v0.1 (Determinism), v0.2 (Generator Interface), v1 (Hosted) |
+| [PRD.md](docs/PRD.md) | Product Requirements — target users, MVP goals, CLI commands, success metrics, risks |
+| [AppFlow.md](docs/AppFlow.md) | CLI and CI workflow documentation — first run, chat-to-spec wizard, self-heal loops |
+| [GettingStarted.md](docs/GettingStarted.md) | 10-minute contributor walkthrough — prerequisites, setup, basic commands |
+| [Roadmap.md](docs/Roadmap.md) | Milestone plan — v0 (MVP), v0.1 (Determinism), v0.2 (Generator Interface), v1 (Hosted) |
 
 ### Engineering
 
 | Doc | Description |
 |-----|-------------|
-| [FullStackArchitecture.md](./FullStackArchitecture.md) | Scalable baseline — monorepo structure, REST+OpenAPI, PostgreSQL, OAuth/RBAC |
-| [SDLC.md](./SDLC.md) | Software Development Life Cycle — 8 stages, quality gates, security gates, release management |
-| [API-Spec.md](./API-Spec.md) | REST API specification — auth, resources, pagination, error format, idempotency |
-| [DataModel.md](./DataModel.md) | PostgreSQL schema — 10 tables (users, orgs, projects, specs, runs, artifacts, etc.) |
-| [CI-CD.md](./CI-CD.md) | GitHub Actions workflows — PR gates, main branch, self-heal in CI |
-| [TestingStrategy.md](./TestingStrategy.md) | Test layers — unit, contract, golden file, integration, security tests |
-| [Security.md](./Security.md) | Threat model, secret handling, LLM hardening, supply-chain controls |
-| [Observability.md](./Observability.md) | Run manifests, correlation IDs, metrics, OpenTelemetry tracing, SLOs |
-| [Deployment.md](./Deployment.md) | Deployment philosophy — CLI packaging, web/API deployment, secrets management |
-| [tech-stack.md](./tech-stack.md) | Tech stack summary — TypeScript, AJV, Ollama, React, FastAPI, PostgreSQL |
-| [Runbooks.md](./Runbooks.md) | Incident playbooks — LLM outage, token spike, secret leakage, CI misconfig |
+| [FullStackArchitecture.md](docs/FullStackArchitecture.md) | Scalable baseline — monorepo structure, REST+OpenAPI, PostgreSQL, OAuth/RBAC |
+| [SDLC.md](docs/SDLC.md) | Software Development Life Cycle — 8 stages, quality gates, security gates, release management |
+| [API-Spec.md](docs/API-Spec.md) | REST API specification — auth, resources, pagination, error format, idempotency |
+| [DataModel.md](docs/DataModel.md) | PostgreSQL schema — 10 tables (users, orgs, projects, specs, runs, artifacts, etc.) |
+| [CI-CD.md](docs/CI-CD.md) | GitHub Actions workflows — PR gates, main branch, self-heal in CI |
+| [TestingStrategy.md](docs/TestingStrategy.md) | Test layers — unit, contract, golden file, integration, security tests |
+| [Security.md](docs/Security.md) | Threat model, secret handling, LLM hardening, supply-chain controls |
+| [Observability.md](docs/Observability.md) | Run manifests, correlation IDs, metrics, OpenTelemetry tracing, SLOs |
+| [Deployment.md](docs/Deployment.md) | Deployment philosophy — CLI packaging, web/API deployment, secrets management |
+| [tech-stack.md](docs/tech-stack.md) | Tech stack summary — TypeScript, AJV, Ollama, React, FastAPI, PostgreSQL |
+| [Runbooks.md](docs/Runbooks.md) | Incident playbooks — LLM outage, token spike, secret leakage, CI misconfig |
 
 ### Architecture Decision Records
 
 | Doc | Description |
 |-----|-------------|
-| [ADR/0001-foundation-architecture.md](./ADR/0001-foundation-architecture.md) | CLI-first, LLM adapter abstraction, monorepo, REST+OpenAPI, safe-by-default CI |
+| [ADR/0001-foundation-architecture.md](docs/ADR/0001-foundation-architecture.md) | CLI-first, LLM adapter abstraction, monorepo, REST+OpenAPI, safe-by-default CI |
 
 ### Design
 
 | Doc | Description |
 |-----|-------------|
-| [UI-UX.md](./UI-UX.md) | Web dashboard UX — key screens, CSS component system, WCAG AA accessibility |
+| [UI-UX.md](docs/UI-UX.md) | Web dashboard UX — key screens, CSS component system, WCAG AA accessibility |
 
 ### Diagrams
 
 | Doc | Description |
 |-----|-------------|
-| [diagrams/system-flow.mmd](./diagrams/system-flow.mmd) | Mermaid flowchart — raw requirements through structuring, generation, verification, self-heal |
+| [diagrams/system-flow.mmd](docs/diagrams/system-flow.mmd) | Mermaid flowchart — raw requirements through structuring, generation, verification, self-heal |
 
 ### Source Inputs (Root-Level)
 
 | Doc | Description |
 |-----|-------------|
-| [../NijaSpec_Analysis.md](../NijaSpec_Analysis.md) | Strategic analysis — market thesis, technical assessment, GTM, pricing, PMF score (7.5/10) |
-| [../NijaSpec_DeepBlueprint.md](../NijaSpec_DeepBlueprint.md) | Realist stress-test — 5 plot twists, 4 roadblocks, revised PMF (7/10) |
-| [../NijaSpec-Technical-Architecture-and-System-Engineering-Specs.md](../NijaSpec-Technical-Architecture-and-System-Engineering-Specs.md) | Engineering spec — LLMProvider interface, adapter pattern, CI pipeline blueprint |
+| [NijaSpec_Analysis.md](./NijaSpec_Analysis.md) | Strategic analysis — market thesis, technical assessment, GTM, pricing, PMF score (7.5/10) |
+| [NijaSpec_DeepBlueprint.md](./NijaSpec_DeepBlueprint.md) | Realist stress-test — 5 plot twists, 4 roadblocks, revised PMF (7/10) |
+| [NijaSpec-Technical-Architecture-and-System-Engineering-Specs.md](./NijaSpec-Technical-Architecture-and-System-Engineering-Specs.md) | Engineering spec — LLMProvider interface, adapter pattern, CI pipeline blueprint |
 
 ### Standalone Architecture Docs (Root)
 
 | Doc | Description |
 |-----|-------------|
-| [../NijaSpec_TrustEngine_Architecture.md](../NijaSpec_TrustEngine_Architecture.md) | Trust Engine deep-dive — why raw LLM code gen fails, the JSON/template inversion, economic analysis |
-| [../NijaSpec_MasterBlueprint_v3.md](../NijaSpec_MasterBlueprint_v3.md) | Master blueprint — evolution from NijaSpec to nija-audit, architecture, roadmap, pricing, risks |
+| [NijaSpec_TrustEngine_Architecture.md](./NijaSpec_TrustEngine_Architecture.md) | Trust Engine deep-dive — why raw LLM code gen fails, the JSON/template inversion, economic analysis |
+| [NijaSpec_MasterBlueprint_v3.md](./NijaSpec_MasterBlueprint_v3.md) | Master blueprint — evolution from NijaSpec to nija-audit, architecture, roadmap, pricing, risks |
 
 ---
 
@@ -145,7 +145,20 @@ npm run check -- test-spec.md --skip-llm
 
 # Run with local Ollama (requires qwen2.5:7b)
 npm run check -- test-spec.md
+
+# Run with custom Ollama endpoint/model
+npm run check -- test-spec.md --endpoint http://localhost:11434/api/generate --model qwen2.5:7b
 ```
+
+### CLI Options
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--skip-llm` | Use deterministic mock extractor | — |
+| `--endpoint URL` | Ollama endpoint | `http://localhost:11434/api/generate` |
+| `--model NAME` | Ollama model name | `qwen2.5:7b` |
+| `--help, -h` | Show help | — |
+| `--version, -v` | Show version | — |
 
 ---
 
@@ -153,12 +166,11 @@ npm run check -- test-spec.md
 
 | Area | Status |
 |------|--------|
-| Test suite | None — no unit, integration, or contract tests for the tool itself |
-| `axios` dependency | Used in `localModel.ts` but missing from `package.json` |
-| Schema files | `schemas/` directory empty — compliance rules are inline in `bin/nija.ts` |
-| Template files | `templates/` directory empty — patches/tests use hardcoded strings |
-| CI/CD workflows | `.github/workflows/` empty — documented but not implemented |
-| Build pipeline | No `build` script — `tsconfig.json` outputs to `dist/` but no compile step |
-| LLMProvider abstraction | Documented in ADR/specs but only `LocalModel` class exists |
+| Template files | `templates/` directory exists but is empty — patches/tests use hardcoded strings in TypeScript |
+| LLMProvider abstraction | ADR documents adapter pattern — only `LocalModel` (Ollama) and `MockExtractor` exist |
 | Config file support | Docs reference `.nija-config.json` but no config loading is implemented |
+| Ollama configuration | Endpoint and model are configurable via CLI flags but not via config file |
+| Gemini/cloud LLM | Trust Engine Architecture describes Gemini integration — not implemented |
+| Hosted mode | FullStackArchitecture describes FastAPI backend + PostgreSQL — not implemented |
+| Web dashboard | UI-UX.md describes React dashboard — not implemented |
 
