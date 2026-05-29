@@ -1,0 +1,23 @@
+{
+  "name": "naijaspec",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "check": "ts-node bin/nija.ts check",
+    "test": "echo \"Error: що no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}

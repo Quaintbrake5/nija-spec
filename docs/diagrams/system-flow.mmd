@@ -1,0 +1,13 @@
+flowchart TD
+  A["Raw requirements<br/>(WhatsApp, voice notes, Figma, notes)"] --> B["Phase 1: Structuring<br/>Extract entities/endpoints"]
+  B --> C["intermediate_schema.json"]
+  C --> D["Phase 2: Standardization<br/>Compile canonical spec"]
+  D --> E["nijaspec.md"]
+  E --> F["Token estimate + NGN cost preview"]
+  F --> G["Generate tests<br/>(Jest first)"]
+  G --> H["Run tests locally / CI"]
+  H -->|Pass| I["Evidence report<br/>Green status + artifacts"]
+  H -->|Fail| J["Failure logs + run manifest"]
+  J --> K["Optional bounded self-heal"]
+  K --> G
+
