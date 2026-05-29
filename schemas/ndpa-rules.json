@@ -1,0 +1,33 @@
+[
+  {
+    "id": "BREACH-001",
+    "severity": "CRITICAL",
+    "framework": "NDPA",
+    "path": "data_lifecycle.retention",
+    "type": "required",
+    "finding": "Data Retention Policy Absent",
+    "risk": "Regulatory fine",
+    "article": "NDPA 2.6.3"
+  },
+  {
+    "id": "BREACH-003",
+    "severity": "HIGH",
+    "framework": "NDPA",
+    "path": "data_lifecycle.pii_categories",
+    "type": "required",
+    "finding": "PII Categories Not Documented",
+    "risk": "Non-compliance with data processing principles",
+    "article": "NDPA 2.3"
+  },
+  {
+    "id": "BREACH-004",
+    "severity": "CRITICAL",
+    "framework": "NDPA",
+    "path": "infrastructure.data_residency",
+    "type": "enum",
+    "values": ["Local", "Hybrid"],
+    "finding": "Foreign Data Residency Without Adequate Safeguards",
+    "risk": "Cross-border transfer violation",
+    "article": "NDPA 2.10"
+  }
+]

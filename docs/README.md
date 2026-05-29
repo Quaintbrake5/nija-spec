@@ -104,13 +104,13 @@ bin/nija.ts                              CLI entry point — orchestrates the fu
 |-----|-------------|
 | [diagrams/system-flow.mmd](./diagrams/system-flow.mmd) | Mermaid flowchart — raw requirements through structuring, generation, verification, self-heal |
 
-### Source Inputs (Original Analysis Documents)
+### Source Inputs (Root-Level)
 
 | Doc | Description |
 |-----|-------------|
-| [source/NijaSpec_Analysis.md](./source/NijaSpec_Analysis.md) | Strategic analysis — market thesis, technical assessment, GTM, pricing, PMF score (7.5/10) |
-| [source/NijaSpec_DeepBlueprint.md](./source/NijaSpec_DeepBlueprint.md) | Realist stress-test — 5 plot twists, 4 roadblocks, revised PMF (7/10) |
-| [source/NijaSpec-Technical-Architecture-and-System-Engineering-Specs.md](./source/NijaSpec-Technical-Architecture-and-System-Engineering-Specs.md) | Engineering spec — LLMProvider interface, adapter pattern, CI pipeline blueprint |
+| [../NijaSpec_Analysis.md](../NijaSpec_Analysis.md) | Strategic analysis — market thesis, technical assessment, GTM, pricing, PMF score (7.5/10) |
+| [../NijaSpec_DeepBlueprint.md](../NijaSpec_DeepBlueprint.md) | Realist stress-test — 5 plot twists, 4 roadblocks, revised PMF (7/10) |
+| [../NijaSpec-Technical-Architecture-and-System-Engineering-Specs.md](../NijaSpec-Technical-Architecture-and-System-Engineering-Specs.md) | Engineering spec — LLMProvider interface, adapter pattern, CI pipeline blueprint |
 
 ### Standalone Architecture Docs (Root)
 
@@ -161,3 +161,4 @@ npm run check -- test-spec.md
 | Build pipeline | No `build` script — `tsconfig.json` outputs to `dist/` but no compile step |
 | LLMProvider abstraction | Documented in ADR/specs but only `LocalModel` class exists |
 | Config file support | Docs reference `.nija-config.json` but no config loading is implemented |
+

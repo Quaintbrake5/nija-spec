@@ -15,3 +15,4 @@ All endpoints must be upgraded to TLS 1.3 to meet CBN Cybersecurity Framework Se
 Please review the regulatory requirement and update the architecture spec.`;
   }
 }
+

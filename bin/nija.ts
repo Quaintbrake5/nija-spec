@@ -11,6 +11,13 @@ import { PatchGenerator } from '../src/remediation/patchGenerator';
 import { TestGenerator } from '../src/remediation/testGenerator';
 import { MockExtractor } from '../src/orchestrator/mockExtractor';
 
+// Load schemas from files
+const schemasDir = path.join(__dirname, '..', 'schemas');
+const complianceSchema = JSON.parse(fs.readFileSync(path.join(schemasDir, 'compliance-spec.json'), 'utf8'));
+const ndpaRules = JSON.parse(fs.readFileSync(path.join(schemasDir, 'ndpa-rules.json'), 'utf8'));
+const cbnRules = JSON.parse(fs.readFileSync(path.join(schemasDir, 'cbn-rules.json'), 'utf8'));
+const allRules = [...ndpaRules, ...cbnRules];
+
 async function main(): Promise<void> {
   const args: string[] = process.argv.slice(2);
   const command: string | undefined = args[0];
@@ -66,21 +73,12 @@ async function main(): Promise<void> {
 
     // Phase 2: Compliance Gap Analysis
     console.log('[ENGINE] Compiling against regulatory schemas...  ✓');
-    const schema = {
-      type: 'object',
-      required: ['infrastructure'],
-      properties: {
-        infrastructure: { type: 'object' }
-      }
-    };
+    const schema = complianceSchema;
 
     const { valid: complianceValid, errors } = ComplianceEngine.validate(extractedData, schema);
 
     console.log('[ENGINE] Running Breach Detection Matrix...');
-    const rules = [
-      { id: 'BREACH-001', severity: 'CRITICAL', framework: 'NDPA', path: 'data_lifecycle.retention', type: 'required', finding: 'Data Retention Policy Absent', risk: 'Regulatory fine', article: 'NDPA 2.6.3' },
-      { id: 'BREACH-002', severity: 'HIGH', framework: 'CBN', path: 'authentication.tls_version', type: 'enum', values: ['1.2', '1.3'], finding: 'TLS Version Unspecified', risk: 'Automatic non-compliance flag', article: 'CBN 4.2' }
-    ];
+    const rules = allRules;
     const breaches = BreachDetector.detect(extractedData, rules);
 
     console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
@@ -109,10 +107,10 @@ async function main(): Promise<void> {
         const test = TestGenerator.generateTest(b.id, extractedData);
 
         fs.writeFileSync(path.join(patchesDir, `${b.id}-fix.md`), patch);
-        fs.writeFileSync(path.join(patchesDir, `${b.id}-test.js`), test);
+        fs.writeFileSync(path.join(patchesDir, `${b.id}-test.ts`), test);
 
         console.log(`🛠️  Patch generated: .nija/patches/${b.id}-fix.md`);
-        console.log(`🛠️  Test generated:  .nija/patches/${b.id}-test.js`);
+        console.log(`🛠️  Test generated:  .nija/patches/${b.id}-test.ts`);
       });
 
       console.log('\nPROCESS EXITED WITH CODE 1. Pipeline halted.');
@@ -126,3 +124,5 @@ async function main(): Promise<void> {
 }
 
 main();
+
+

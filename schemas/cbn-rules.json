@@ -1,0 +1,34 @@
+[
+  {
+    "id": "BREACH-002",
+    "severity": "HIGH",
+    "framework": "CBN",
+    "path": "authentication.tls_version",
+    "type": "enum",
+    "values": ["1.2", "1.3"],
+    "finding": "TLS Version Unspecified",
+    "risk": "Automatic non-compliance flag",
+    "article": "CBN 4.2"
+  },
+  {
+    "id": "BREACH-005",
+    "severity": "HIGH",
+    "framework": "CBN",
+    "path": "authentication.mfa",
+    "type": "enum",
+    "values": ["Enabled"],
+    "finding": "Multi-Factor Authentication Disabled",
+    "risk": "Unauthorized access vulnerability",
+    "article": "CBN 4.1"
+  },
+  {
+    "id": "BREACH-006",
+    "severity": "MEDIUM",
+    "framework": "CBN",
+    "path": "audit_metadata.classification",
+    "type": "required",
+    "finding": "Security Classification Missing",
+    "risk": "Insufficient data handling controls",
+    "article": "CBN 3.5"
+  }
+]

@@ -23,3 +23,4 @@ test('should reject TLS versions below 1.2', async () => {
     return tests[breachId] || `// Test for ${breachId}\n// Manual implementation required.`;
   }
 }
+

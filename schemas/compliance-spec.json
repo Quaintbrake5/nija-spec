@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NaijaSpec Compliance Specification",
+  "description": "JSON Schema for extracted compliance data from architecture specifications",
+  "type": "object",
+  "required": ["infrastructure", "authentication", "data_lifecycle", "audit_metadata"],
+  "properties": {
+    "infrastructure": {
+      "type": "object",
+      "required": ["hosting", "data_residency"],
+      "properties": {
+        "hosting": { "type": "string" },
+        "data_residency": { "type": "string", "enum": ["Local", "Foreign", "Hybrid"] }
+      }
+    },
+    "authentication": {
+      "type": "object",
+      "required": ["mfa", "tls_version"],
+      "properties": {
+        "mfa": { "type": "string", "enum": ["Enabled", "Disabled"] },
+        "tls_version": { "type": "string", "enum": ["1.1", "1.2", "1.3"] }
+      }
+    },
+    "data_lifecycle": {
+      "type": "object",
+      "required": ["pii_categories", "retention"],
+      "properties": {
+        "pii_categories": { "type": "string" },
+        "retention": { "type": "string" }
+      }
+    },
+    "audit_metadata": {
+      "type": "object",
+      "required": ["author", "version", "classification"],
+      "properties": {
+        "author": { "type": "string" },
+        "version": { "type": "string" },
+        "classification": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

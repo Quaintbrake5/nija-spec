@@ -1,23 +1,44 @@
 {
-  "name": "naijaspec",
+  "name": "nija-audit",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Nigeria-first Compliance-as-Code architectural auditing engine",
+  "main": "dist/bin/nija.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
+    "build": "tsc",
+    "dev": "ts-node bin/nija.ts",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "typecheck": "tsc --noEmit",
     "check": "ts-node bin/nija.ts check",
-    "test": "echo \"Error: що no test specified\" && exit 1"
+    "lint": "tsc --noEmit"
   },
-  "keywords": [],
+  "keywords": [
+    "compliance",
+    "nigeria",
+    "ndpa",
+    "cbn",
+    "audit"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^6.0.3"
+    "axios": "^1.7.0",
+    "typescript": "^6.0.3",
+    "ajv": "^8.20.0",
+    "ts-node": "^10.9.2"
+  },
+  "bin": {
+    "nija-audit": "dist/bin/nija.js"
+  },
+  "devDependencies": {
+    "ts-jest": "^29.2.0",
+    "@types/jest": "^29.5.0",
+    "jest": "^29.7.0",
+    "@types/node": "^20.0.0"
   }
 }
