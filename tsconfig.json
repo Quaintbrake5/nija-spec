@@ -15,7 +15,8 @@
   },
   "include": [
     "src/**/*",
-    "bin/**/*"
+    "bin/**/*",
+    ".nija/patches/**/*"
   ],
   "exclude": [
     "node_modules"
