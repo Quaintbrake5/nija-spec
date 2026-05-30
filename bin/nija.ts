@@ -93,6 +93,36 @@ function validateTestOutput(code: string): boolean {
 }
 
 async function main(): Promise<void> {
+  const VERSION = 'v1.0.0';
+
+  // Show banner unless requesting help or version
+  const showBanner = !process.argv.includes('--help')
+    && !process.argv.includes('-h')
+    && !process.argv.includes('--version')
+    && !process.argv.includes('-v');
+
+  if (showBanner) {
+    console.log(`
+  ┌───────────────────────────────────────────────────┐
+  │                                                   │
+  │  ███╗   ██╗██╗ ██████╗ ██╗  ██╗                   │
+  │  ████╗  ██║██║██╔════╝ ██║  ██║                   │
+  │  ██╔██╗ ██║██║██║      ███████║                   │
+  │  ██║╚██╗██║██║██║      ██╔══██║                   │
+  │  ██║ ╚████║██║╚██████╗ ██║  ██║                   │
+  │  ╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═╝  ╚═╝                   │
+  │                                                   │
+  │  Nigeria-first Compliance-as-Code                 │
+  │  Architectural Auditing Engine                    │
+  │                                                   │
+  │  ${VERSION.padEnd(49)}│
+  └───────────────────────────────────────────────────┘
+
+  Type "nija-audit --help" for available commands.
+  Type "nija-audit init" to set up your project.
+`);
+  }
+
   const args: string[] = process.argv.slice(2);
 
   if (args.includes('--help') || args.includes('-h')) {
