@@ -1,0 +1,12 @@
+Extract compliance data from the following architecture specification.
+
+Return ONLY valid JSON matching the required schema. Do not add any preamble, markdown, or explanations.
+
+The JSON should contain these sections (use empty objects for missing sections):
+- infrastructure: { hosting, data_residency, region }
+- authentication: { tls_version, mfa, encryption_at_rest }
+- data_lifecycle: { retention, pii_categories, backup_policy }
+- audit_metadata: { author, version, classification, last_reviewed }
+
+Specification:
+{content}

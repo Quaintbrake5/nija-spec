@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { LLMProvider } from './llmProvider';
 
 export interface LocalModelConfig {
   endpoint: string;
@@ -6,7 +7,8 @@ export interface LocalModelConfig {
   timeout?: number;
 }
 
-export class LocalModel {
+export class LocalModel implements LLMProvider {
+  name = 'ollama';
   private config: LocalModelConfig;
 
   constructor(config: LocalModelConfig) {

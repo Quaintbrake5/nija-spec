@@ -44,5 +44,5 @@ schemas/                                 JSON schemas for compliance data and br
 
 ### Tech Stack
 - **CLI**: TypeScript, Node.js, Jest, AJV (schema validation)
-- **LLMs**: Ollama/Qwen (local), MockExtractor (offline/CI), Gemini (planned)
+- **LLMs**: Ollama/Qwen (local), MockExtractor (offline/CI), Gemini (cloud) — all via LLMProvider interface with fallback
 - **Testing**: Jest with ts-jest

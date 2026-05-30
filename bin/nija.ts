@@ -1,15 +1,19 @@
 import fs from 'fs';
 import path from 'path';
 import { MdParser } from '../src/parser/mdParser';
-import { Sanitizer } from '../src/parser/sanitizer';
 import { HeaderValidator } from '../src/parser/headerValidator';
-import { LocalModel } from '../src/orchestrator/localModel';
 import { RetryLoop } from '../src/orchestrator/retryLoop';
 import { ComplianceEngine } from '../src/engine/compliance';
 import { BreachDetector } from '../src/engine/breachDetector';
 import { PatchGenerator } from '../src/remediation/patchGenerator';
 import { TestGenerator } from '../src/remediation/testGenerator';
 import { MockExtractor } from '../src/orchestrator/mockExtractor';
+import { LLMManager } from '../src/orchestrator/llmManager';
+import { LocalModel } from '../src/orchestrator/localModel';
+import { MockExtractorAdapter } from '../src/orchestrator/mockExtractorAdapter';
+import { GeminiAdapter } from '../src/orchestrator/geminiAdapter';
+import { PromptLoader } from '../src/orchestrator/promptLoader';
+import { Sanitizer } from '../src/parser/sanitizer';
 // Gemini adapter (loaded dynamically when --gemini flag is used)
 
 // Load config file if present
@@ -47,21 +51,45 @@ function getArgValue(args: string[], flag: string): string | undefined {
   return undefined;
 }
 
-function generateManifest(specFile: string, breaches: any[], patchesDir: string): void {
+function generateManifest(specFile: string, breaches: any[], patchesDir: string, promptVersion?: string, redactionReport?: any): void {
   const manifest = {
     timestamp: new Date().toISOString(),
     specFile,
     breachesDetected: breaches.length,
     patchesGenerated: breaches.length,
     status: breaches.length === 0 ? 'PASS' : 'FAIL',
-    frameworks: [...new Set(breaches.map(b => b.framework))]
+    frameworks: [...new Set(breaches.map(b => b.framework))],
+    promptVersion: promptVersion || 'none',
+    redactionSummary: redactionReport ? {
+      patternsFound: redactionReport.patterns,
+      totalRedactions: redactionReport.count
+    } : { patternsFound: [], totalRedactions: 0 }
   };
   const manifestPath = path.join(patchesDir, '..', 'run-manifest.json');
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 }
 
 function validateTestOutput(code: string): boolean {
-  return code.includes('test(') && code.includes('expect(') && !code.includes('SyntaxError');
+  // Basic syntax checks
+  if (!code.includes('test(') || !code.includes('expect(')) {
+    return false;
+  }
+  if (code.includes('SyntaxError')) {
+    return false;
+  }
+  // Check for balanced braces
+  const openBraces = (code.match(/{/g) || []).length;
+  const closeBraces = (code.match(/}/g) || []).length;
+  if (openBraces !== closeBraces) {
+    return false;
+  }
+  // Check for balanced parentheses
+  const openParens = (code.match(/\(/g) || []).length;
+  const closeParens = (code.match(/\)/g) || []).length;
+  if (openParens !== closeParens) {
+    return false;
+  }
+  return true;
 }
 
 async function main(): Promise<void> {
@@ -224,7 +252,11 @@ Describe incident response and breach notification procedures.
     }
 
     console.log('[GATE]   Sanitizing for credential exposure...  ✓');
-    const sanitized: string = Sanitizer.sanitize(rawContent);
+    const redactionReport = Sanitizer.sanitizeWithReport(rawContent);
+    const sanitized = redactionReport.redactedContent;
+    if (redactionReport.count > 0) {
+      console.log(`[GATE]   Redacted ${redactionReport.count} pattern(s)...       ✓`);
+    }
 
     const { valid, missing } = HeaderValidator.validate(ast!);
     if (!valid) {
@@ -233,44 +265,38 @@ Describe incident response and breach notification procedures.
     }
     console.log('[GATE]   Header validation...                     ✓');
 
-    // Phase 1: Local Semantic Extraction
+    // Phase 1: Extraction (using LLMManager)
     const config = loadConfig();
     const skipLlm = process.argv.includes('--skip-llm') || process.env.NIJA_SKIP_LLM === 'true';
+    const useGemini = process.argv.includes('--gemini') || process.env.NIJA_USE_GEMINI === 'true';
     const endpoint = getArgValue(args, '--endpoint') || process.env.NIJA_OLLAMA_ENDPOINT || config.endpoint || 'http://localhost:11434/api/generate';
     const model = getArgValue(args, '--model') || process.env.NIJA_OLLAMA_MODEL || config.model || 'qwen2.5:7b';
-    const useGemini = process.argv.includes('--gemini') || process.env.NIJA_USE_GEMINI === 'true';
     const geminiApiKey = getArgValue(args, '--gemini-key') || process.env.GEMINI_API_KEY || config.geminiApiKey;
     const geminiModel = getArgValue(args, '--gemini-model') || config.geminiModel || 'gemini-2.5-flash';
 
-    let extractedData: Record<string, any>;
+    // Build provider list based on flags
+    const providers = [];
     if (skipLlm) {
-      console.log('[LOCAL]  Using mock extractor (skip-llm)...       ✓');
-      extractedData = MockExtractor.extract(sanitized);
+      providers.push(new MockExtractorAdapter());
     } else if (useGemini && geminiApiKey) {
-      console.log('[GEMINI] Running cloud extraction...              ✓');
-      const axios = require('axios');
-      const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiApiKey}`,
-        {
-          contents: [{ parts: [{ text: `Extract compliance data as JSON from: ${sanitized}` }] }],
-          generationConfig: {
-            responseMimeType: 'application/json',
-            responseSchema: complianceSchema
-          }
-        },
-        { timeout: 30000 }
-      );
-      extractedData = JSON.parse(response.data.candidates[0].content.parts[0].text);
+      providers.push(new GeminiAdapter({ apiKey: geminiApiKey, model: geminiModel }));
     } else {
-      console.log('[LOCAL]  Running local semantic extraction...   ✓');
-      const localModel = new LocalModel({
-        endpoint: endpoint,
-        model: model
-      });
-      extractedData = await RetryLoop.execute(() =>
-        localModel.extract(`Extract compliance data from: ${sanitized}`, {})
-      );
+      providers.push(new LocalModel({ endpoint, model }));
     }
+
+    const llmManager = new LLMManager(providers);
+    console.log(`[LOCAL]  Using provider: ${llmManager.getActiveProvider().name}...  ✓`);
+
+    // Load prompt for extraction
+    const promptLoader = new PromptLoader();
+    let extractionPrompt: string;
+    try {
+      extractionPrompt = promptLoader.load('extraction', 'v1');
+    } catch {
+      extractionPrompt = `Extract compliance data as JSON from: ${sanitized}`;
+    }
+
+    const extractedData = await llmManager.extract(extractionPrompt.replace('{content}', sanitized), {});
 
     // Phase 2: Compliance Gap Analysis
     console.log('[ENGINE] Compiling against regulatory schemas...  ✓');
@@ -289,7 +315,7 @@ Describe incident response and breach notification procedures.
     if (breaches.length === 0) {
       console.log('✅ No breaches detected. Architecture is compliant.');
       const patchesDir = path.join(process.cwd(), '.nija');
-      generateManifest(filePath, [], patchesDir);
+      generateManifest(filePath, [], patchesDir, 'v1', redactionReport);
     } else {
       breaches.forEach(b => {
         console.log(`❌ [${b.id}] ${b.severity} — ${b.finding}`);
@@ -321,7 +347,7 @@ Describe incident response and breach notification procedures.
       });
 
       console.log('\nPROCESS EXITED WITH CODE 1. Pipeline halted.');
-      generateManifest(filePath, breaches, patchesDir);
+      generateManifest(filePath, breaches, patchesDir, 'v1', redactionReport);
       process.exit(1);
     }
 

@@ -170,9 +170,6 @@ npm run check -- test-spec.md --endpoint http://localhost:11434/api/generate --m
 
 | Area | Status |
 |------|--------|
-| LLMProvider abstraction | No formal adapter interface — LocalModel, MockExtractor, and Gemini API are standalone |
-| Prompt versioning | Not implemented — no `.nijaspec/prompts/` directory |
-| Post-generation validation | Basic string checks only — no TypeScript parser or ESLint validation |
 | Hosted mode | FullStackArchitecture describes FastAPI backend + PostgreSQL — not implemented |
 | Web dashboard | UI-UX.md describes React dashboard — not implemented |
 

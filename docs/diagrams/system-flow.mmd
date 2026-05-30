@@ -1,13 +1,26 @@
 flowchart TD
-  A["Raw requirements<br/>(WhatsApp, voice notes, Figma, notes)"] --> B["Phase 1: Structuring<br/>Extract entities/endpoints"]
-  B --> C["intermediate_schema.json"]
-  C --> D["Phase 2: Standardization<br/>Compile canonical spec"]
-  D --> E["nijaspec.md"]
-  E --> F["Token estimate + NGN cost preview"]
-  F --> G["Generate tests<br/>(Jest first)"]
-  G --> H["Run tests locally / CI"]
-  H -->|Pass| I["Evidence report<br/>Green status + artifacts"]
-  H -->|Fail| J["Failure logs + run manifest"]
-  J --> K["Optional bounded self-heal"]
-  K --> G
-
+    A["Input: Markdown Architecture Spec"] --> B["Phase 0: Iron Gate"]
+    B --> B1["Parse Markdown AST"]
+    B1 --> B2["Sanitize Credentials"]
+    B2 --> B3["Validate Required Sections"]
+    B3 --> C["Phase 1: Extraction"]
+    C --> C1{"--skip-llm?"}
+    C1 -->|Yes| C2["MockExtractor\n(deterministic)"]
+    C1 -->|No| C3{"--gemini?"}
+    C3 -->|Yes| C4["Gemini API\n(structured output)"]
+    C3 -->|No| C5["Ollama/Qwen\n(JSON-mode)"]
+    C2 --> D["Phase 2: Compliance Analysis"]
+    C4 --> D
+    C5 --> D
+    D --> D1["AJV Schema Validation"]
+    D1 --> D2["Breach Detection Matrix\n(NDPA + CBN rules)"]
+    D2 --> E{"Breaches found?"}
+    E -->|No| F["✅ PASS\nCompliant architecture"]
+    E -->|Yes| G["Phase 3: Remediation"]
+    G --> G1["Generate Patches\n(from templates/)"]
+    G --> G2["Generate Tests\n(from templates/)"]
+    G1 --> G3[".nija/patches/"]
+    G2 --> G3
+    G3 --> G4["run-manifest.json"]
+    G4 --> H["❌ FAIL\nExit code 1"]
+    F --> G4
