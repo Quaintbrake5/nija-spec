@@ -13,7 +13,8 @@
     "init": "ts-node bin/nija.ts init",
     "verify": "ts-node bin/nija.ts verify",
     "estimate": "ts-node bin/nija.ts estimate",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "compliance",
@@ -24,13 +25,28 @@
   ],
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/naijaspec/nija-audit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/naijaspec/nija-audit/issues"
+  },
+  "homepage": "https://github.com/naijaspec/nija-audit#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "schemas",
+    ".nijaspec"
+  ],
   "type": "commonjs",
   "dependencies": {
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
-    "axios": "^1.7.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^6.0.3"
+    "axios": "^1.7.0"
   },
   "bin": {
     "nija-audit": "dist/bin/nija.js"
@@ -39,6 +55,8 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^20.0.0",
     "jest": "^29.7.0",
-    "ts-jest": "^29.2.0"
+    "ts-jest": "^29.2.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
   }
 }

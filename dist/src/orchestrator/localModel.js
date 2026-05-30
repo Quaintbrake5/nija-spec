@@ -7,6 +7,7 @@ exports.LocalModel = void 0;
 const axios_1 = __importDefault(require("axios"));
 class LocalModel {
     constructor(config) {
+        this.name = 'ollama';
         this.config = config;
     }
     /**

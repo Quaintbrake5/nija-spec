@@ -1,0 +1,14 @@
+src/
+bin/
+docs/
+.github/
+.nija/
+*.test.js
+*.test.ts
+tsconfig.json
+jest.config.ts
+.gitignore
+AGENTS.md
+CLAUDE.md
+RUNNING.md
+test-spec.md

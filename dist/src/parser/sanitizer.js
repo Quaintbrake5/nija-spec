@@ -7,17 +7,35 @@ class Sanitizer {
      * Prevents leaking API keys or secrets to cloud providers.
      */
     static sanitize(content) {
-        // Regex for common secret patterns (API keys, tokens, passwords)
+        return this.sanitizeWithReport(content).redactedContent;
+    }
+    /**
+     * Sanitizes content and returns a detailed redaction report.
+     */
+    static sanitizeWithReport(content) {
         const secretPatterns = [
-            /(?:key|token|secret|password|auth)\s*[:=]\s*['"][a-zA-Z0-9_\-]{16,}/gi,
-            /([a-zA-Z0-9]{20,})[=]{0,2}/g, // Generic long alphanumeric strings
-            /sk_[a-zA-Z0-9]{32,}/g, // Common secret key prefix
+            { pattern: /(?:key|token|secret|password|auth)\w*\s*[:=]\s*['"]?[a-zA-Z0-9_\-]{16,}['"]?/gi, name: 'credential-key' },
+            { pattern: /([a-zA-Z0-9]{32,})[=]{0,2}/g, name: 'long-alphanumeric' },
+            { pattern: /sk_[a-zA-Z0-9]{32,}/g, name: 'secret-key-prefix' },
+            { pattern: /(?:AKIA|ASIA)[A-Z0-9]{16}/g, name: 'aws-key' },
+            { pattern: /-----BEGIN\s+(RSA\s+)?PRIVATE\s+KEY-----/g, name: 'private-key' },
+            { pattern: /(?:eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,})/g, name: 'jwt-token' },
         ];
         let sanitized = content;
-        for (const pattern of secretPatterns) {
-            sanitized = sanitized.replace(pattern, '[REDACTED]');
+        const foundPatterns = [];
+        for (const { pattern, name } of secretPatterns) {
+            const regex = new RegExp(pattern.source, pattern.flags);
+            const matches = sanitized.match(regex);
+            if (matches && matches.length > 0) {
+                foundPatterns.push(`${name} (${matches.length} occurrences)`);
+                sanitized = sanitized.replace(regex, '[REDACTED]');
+            }
         }
-        return sanitized;
+        return {
+            patterns: foundPatterns,
+            count: foundPatterns.length,
+            redactedContent: sanitized
+        };
     }
 }
 exports.Sanitizer = Sanitizer;
