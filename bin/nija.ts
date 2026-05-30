@@ -10,6 +10,27 @@ import { BreachDetector } from '../src/engine/breachDetector';
 import { PatchGenerator } from '../src/remediation/patchGenerator';
 import { TestGenerator } from '../src/remediation/testGenerator';
 import { MockExtractor } from '../src/orchestrator/mockExtractor';
+// Gemini adapter (loaded dynamically when --gemini flag is used)
+
+// Load config file if present
+interface NijaConfig {
+  endpoint?: string;
+  model?: string;
+  geminiApiKey?: string;
+  geminiModel?: string;
+}
+
+function loadConfig(): NijaConfig {
+  const configPath = path.join(process.cwd(), '.nija-config.json');
+  if (fs.existsSync(configPath)) {
+    try {
+      return JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    } catch {
+      return {};
+    }
+  }
+  return {};
+}
 
 // Load schemas from files
 const schemasDir = path.join(__dirname, '..', 'schemas');
@@ -65,6 +86,10 @@ Options:
   --skip-llm       Use deterministic mock extractor instead of local LLM
   --endpoint URL   Ollama endpoint (default: http://localhost:11434/api/generate)
   --model NAME     Ollama model name (default: qwen2.5:7b)
+  --config PATH    Path to config file (default: .nija-config.json)
+  --gemini         Use Gemini API for cloud extraction
+  --gemini-key KEY Gemini API key (or set GEMINI_API_KEY env var)
+  --gemini-model   Gemini model name (default: gemini-2.5-flash)
   --help, -h       Show this help message
   --version, -v    Show version number
 
@@ -153,6 +178,12 @@ Describe incident response and breach notification procedures.
     const lines = content.split('\n').length;
     const sections = (content.match(/^##\s/gm) || []).length;
     const estimatedTokens = lines * 10;
+    // NGN cost estimation (Gemini 2.5 Flash pricing)
+    const inputCostUSD = (estimatedTokens * 0.075) / 1000000;
+    const outputCostUSD = (estimatedTokens * 0.30) / 1000000;
+    const totalCostUSD = inputCostUSD + outputCostUSD;
+    const usdToNGN = 1500;
+    const totalCostNGN = totalCostUSD * usdToNGN;
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log('  ESTIMATION REPORT');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
@@ -160,6 +191,7 @@ Describe incident response and breach notification procedures.
     console.log(`  Lines:          ${lines}`);
     console.log(`  Sections:       ${sections}`);
     console.log(`  Est. tokens:    ${estimatedTokens}`);
+    console.log(`  Est. NGN cost:  ₦${totalCostNGN.toFixed(2)} (at $${totalCostUSD.toFixed(4)} USD)`);
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     process.exit(0);
   }
@@ -202,14 +234,33 @@ Describe incident response and breach notification procedures.
     console.log('[GATE]   Header validation...                     ✓');
 
     // Phase 1: Local Semantic Extraction
+    const config = loadConfig();
     const skipLlm = process.argv.includes('--skip-llm') || process.env.NIJA_SKIP_LLM === 'true';
-    const endpoint = getArgValue(args, '--endpoint') || process.env.NIJA_OLLAMA_ENDPOINT || 'http://localhost:11434/api/generate';
-    const model = getArgValue(args, '--model') || process.env.NIJA_OLLAMA_MODEL || 'qwen2.5:7b';
+    const endpoint = getArgValue(args, '--endpoint') || process.env.NIJA_OLLAMA_ENDPOINT || config.endpoint || 'http://localhost:11434/api/generate';
+    const model = getArgValue(args, '--model') || process.env.NIJA_OLLAMA_MODEL || config.model || 'qwen2.5:7b';
+    const useGemini = process.argv.includes('--gemini') || process.env.NIJA_USE_GEMINI === 'true';
+    const geminiApiKey = getArgValue(args, '--gemini-key') || process.env.GEMINI_API_KEY || config.geminiApiKey;
+    const geminiModel = getArgValue(args, '--gemini-model') || config.geminiModel || 'gemini-2.5-flash';
 
     let extractedData: Record<string, any>;
     if (skipLlm) {
       console.log('[LOCAL]  Using mock extractor (skip-llm)...       ✓');
       extractedData = MockExtractor.extract(sanitized);
+    } else if (useGemini && geminiApiKey) {
+      console.log('[GEMINI] Running cloud extraction...              ✓');
+      const axios = require('axios');
+      const response = await axios.post(
+        `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiApiKey}`,
+        {
+          contents: [{ parts: [{ text: `Extract compliance data as JSON from: ${sanitized}` }] }],
+          generationConfig: {
+            responseMimeType: 'application/json',
+            responseSchema: complianceSchema
+          }
+        },
+        { timeout: 30000 }
+      );
+      extractedData = JSON.parse(response.data.candidates[0].content.parts[0].text);
     } else {
       console.log('[LOCAL]  Running local semantic extraction...   ✓');
       const localModel = new LocalModel({

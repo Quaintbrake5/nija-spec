@@ -23,9 +23,9 @@
 Runs on `pull_request`:
 - install dependencies (Node and Python)
 - lint / typecheck / unit tests
-- run `nijaspec estimate` (cost preview) as an informational step
-- run `nijaspec generate` (optional if committed artifacts aren’t used)
-- run `nijaspec verify`
+- run `nija-audit estimate` (cost preview) as an informational step
+- run `nija-audit generate` (optional if committed artifacts aren’t used)
+- run `nija-audit verify`
 - upload artifacts
 
 Security posture:
@@ -54,7 +54,7 @@ Recommendation:
 
 ### 3.2 Artifact Retention
 Store artifacts for traceability:
-- `.nijaspec/run-manifest.json`
+- `.nija-audit/run-manifest.json`
 - generated tests (if generated in CI)
 - failure logs / structured summaries
 
@@ -122,6 +122,6 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           cd apps/cli
-          node dist/cli.js verify --spec ../../nijaspec.md
+          node dist/cli.js verify --spec ../../nija-audit.md
 ```
 

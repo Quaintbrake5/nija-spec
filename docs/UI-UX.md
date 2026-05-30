@@ -1,5 +1,7 @@
 # NijaSpec — UI/UX Spec (Web Dashboard, Optional v1+)
 
+> **Status: Planned (V1+)** — This dashboard does not exist yet. The current product is a CLI-only tool.
+
 **Doc status:** Draft (v0.1)  
 **Last updated:** 2026-05-22  
 

@@ -9,8 +9,8 @@
 
 1. User inputs raw requirements (chat logs, notes, transcripts).
 2. Phase 1 (“Structuring”): parse into `intermediate_schema.json`.
-3. Phase 2 (“Standardization”): compile into canonical `nijaspec.md`.
-4. Generate test scaffold(s) from `nijaspec.md`.
+3. Phase 2 (“Standardization”): compile into canonical `nija-audit.md`.
+4. Generate test scaffold(s) from `nija-audit.md`.
 5. Run tests locally and/or in CI.
 6. If failures occur, optionally run a bounded “heal” loop to produce a patch candidate.
 
@@ -19,31 +19,31 @@
 ## 2) CLI Flows
 
 ### 2.1 First Run / Bootstrap
-- `nijaspec init`
-  - creates `nijaspec.config.json`
-  - creates `nijaspec.md` template
-  - creates `.nijaspec/prompts/*` (versioned)
+- `nija-audit init`
+  - creates `nija-audit.config.json`
+  - creates `nija-audit.md` template
+  - creates `.nija-audit/prompts/*` (versioned)
 
 ### 2.2 Chat-to-Spec Wizard
 - Input: raw text file(s) (exported WhatsApp, notes, transcript)
-- Output: `intermediate_schema.json` then `nijaspec.md`
+- Output: `intermediate_schema.json` then `nija-audit.md`
 
 Flow:
-- `nijaspec spec from-text --input ./raw.txt --output ./.nijaspec/intermediate_schema.json`
-- `nijaspec spec compile --input ./.nijaspec/intermediate_schema.json --output ./nijaspec.md`
+- `nija-audit spec from-text --input ./raw.txt --output ./.nija-audit/intermediate_schema.json`
+- `nija-audit spec compile --input ./.nija-audit/intermediate_schema.json --output ./nija-audit.md`
 
 ### 2.3 Generate + Verify
 Flow:
-- `nijaspec estimate --spec ./nijaspec.md`
-- `nijaspec generate --input ./nijaspec.md --output ./tests/nijaspec.spec.ts --framework jest`
-- `nijaspec verify --tests ./tests/nijaspec.spec.ts`
+- `nija-audit estimate --spec ./nija-audit.md`
+- `nija-audit generate --input ./nija-audit.md --output ./tests/nija-audit.spec.ts --framework jest`
+- `nija-audit verify --tests ./tests/nija-audit.spec.ts`
 
 ### 2.4 Bounded Self-Heal (Opt-in)
 Flow:
-- `nijaspec verify` fails → writes `.nijaspec/runs/<id>/failure.json`
-- `nijaspec heal --spec ./nijaspec.md --testFile ./tests/nijaspec.spec.ts --errorLog ./.nijaspec/runs/<id>/failure.json`
+- `nija-audit verify` fails → writes `.nija-audit/runs/<id>/failure.json`
+- `nija-audit heal --spec ./nija-audit.md --testFile ./tests/nija-audit.spec.ts --errorLog ./.nija-audit/runs/<id>/failure.json`
 - produces a patch candidate:
-  - `./tests/nijaspec.spec.ts` updated, and/or
+  - `./tests/nija-audit.spec.ts` updated, and/or
   - a human-reviewable diff artifact
 
 Constraints:
@@ -59,8 +59,8 @@ Constraints:
 - Run:
   - dependency install
   - build/lint/test for repo
-  - `nijaspec generate` (or verify existing generated tests)
-  - `nijaspec verify`
+  - `nija-audit generate` (or verify existing generated tests)
+  - `nija-audit verify`
 - Output:
   - check status (pass/fail)
   - optional artifacts:

@@ -61,13 +61,13 @@ Teams routinely ship systems with:
 ## 5) Scope (MVP)
 
 ### 5.1 Core CLI Commands
-- `nijaspec init` — bootstrap config and sample spec.
-- `nijaspec spec from-text` — Phase 1: extract JSON schema from raw input.
-- `nijaspec spec compile` — Phase 2: produce canonical `nijaspec.md`.
-- `nijaspec generate` — generate tests from `nijaspec.md` (supports multiple languages via --lang flag).
-- `nijaspec verify` — run generated tests, summarize pass/fail.
-- `nijaspec estimate` — token + NGN cost preview for a run.
-- `nijaspec heal` (optional/guarded) — attempt regeneration/patching on failing test output.
+- `nija-audit init` — bootstrap config and sample spec.
+- `nija-audit spec from-text` — Phase 1: extract JSON schema from raw input.
+- `nija-audit spec compile` — Phase 2: produce canonical `nija-audit.md`.
+- `nija-audit generate` — generate tests from `nija-audit.md` (supports multiple languages via --lang flag).
+- `nija-audit verify` — run generated tests, summarize pass/fail.
+- `nija-audit estimate` — token + NGN cost preview for a run.
+- `nija-audit heal` (optional/guarded) — attempt regeneration/patching on failing test output.
 
 ### 5.2 Fintech Localizations (MVP)
 - Paystack:

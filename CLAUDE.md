@@ -6,38 +6,43 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Development
 - Build: `npm run build`
-- Lint: `npm run lint`
+- Type check: `npm run typecheck`
 - Test: `npm test` (runs all Jest tests)
 - Test single file: `npm test -- <path-to-file>`
 
-### CLI Tooling (NijaSpec)
-- Initialize project: `nijaspec init`
-- Create spec from text: `nijaspec spec from-text --input <file> --output <file>`
-- Generate verification tests: `nijaspec generate --input <file> --output <dir> --framework <framework>`
-- Run verification: `nijaspec verify --tests <dir>`
-- Estimate costs: `nijaspec estimate --spec <file>`
+### CLI Tooling (nija-audit)
+- Initialize project: `nija-audit init`
+- Run compliance check: `nija-audit generate <spec.md> --skip-llm`
+- Verify generated tests: `nija-audit verify`
+- Estimate tokens: `nija-audit estimate <spec.md>`
+- Show help: `nija-audit --help`
 
 ## Architecture & Structure
 
 ### High-Level Design: The Trust Engine
 NijaSpec follows the **Trust Engine** pattern to ensure deterministic and syntactically correct code generation:
-1. **Cloud Reasoning**: LLMs (e.g., Gemini) extract semantic meaning from requirements into structured JSON.
-2. **Local Deterministic Processing**: A local template engine converts JSON into verifiable test code.
-3. **Verification**: The generated tests are executed against the implementation to ensure alignment.
+1. **Iron Gate**: Parse Markdown, sanitize credentials, validate required sections.
+2. **Local Semantic Extraction**: Ollama/Qwen extracts structured JSON (or MockExtractor for offline/CI).
+3. **Compliance Gap Analysis**: AJV schema validation + Breach Detection Matrix (NDPA/CBN rules).
+4. **Remediation**: Template-based patches and test scaffolding written to `.nija/patches/`.
 
-### Project Structure (Monorepo)
-The project is organized as a monorepo to separate the core orchestration from optional hosted components:
-- `apps/cli/`: Core Node/TypeScript CLI for spec compilation, LLM orchestration, and test generation.
-- `apps/web/`: React + Vite dashboard for visualizing specs and run history (Optional).
-- `apps/api/`: FastAPI (Python) backend for auth, project management, and billing (Optional).
-- `packages/`:
-    - `spec/`: Spec parser, compiler, and JSON schemas.
-    - `llm/`: Provider adapters (Gemini, Gemma) and the cost estimation engine.
-    - `generators/`: Language-specific test templates and generators (Jest, Pytest, Go, etc.).
-    - `shared/`: Shared types and utility functions.
+### Project Structure
+```
+bin/nija.ts                              CLI entry point — orchestrates the full pipeline
+src/
+  parser/                                Markdown parsing, sanitization, header validation
+  orchestrator/                          LLM integration (LocalModel, MockExtractor, RetryLoop)
+  engine/                                Compliance validation and breach detection
+  remediation/                           Patch and test generation from templates
+  generators/                            Generator interface and language registry
+templates/
+  patches/                               Breach-specific remediation templates (.md)
+  tests/                                 Jest/TypeScript test templates (.ts)
+  tests-python/                          PyTest/Python test templates (.py)
+schemas/                                 JSON schemas for compliance data and breach rules
+```
 
 ### Tech Stack
-- **CLI**: TypeScript, Node.js, Jest, ESLint.
-- **Web**: React, Vite, CSS3.
-- **API**: FastAPI, PostgreSQL, Redis, Alembic.
-- **LLMs**: Google Gemini (Primary), Gemma 4 (Local Fallback).
+- **CLI**: TypeScript, Node.js, Jest, AJV (schema validation)
+- **LLMs**: Ollama/Qwen (local), MockExtractor (offline/CI), Gemini (planned)
+- **Testing**: Jest with ts-jest

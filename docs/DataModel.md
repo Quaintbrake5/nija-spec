@@ -1,5 +1,7 @@
 # NijaSpec — Data Model (PostgreSQL) + Retention Policy
 
+> **Status: Planned (V1+)** — This data model does not exist yet. The current product is a CLI-only tool.
+
 **Doc status:** Draft (v0.1)  
 **Last updated:** 2026-05-23  
 

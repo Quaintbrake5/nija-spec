@@ -157,6 +157,10 @@ npm run check -- test-spec.md --endpoint http://localhost:11434/api/generate --m
 | `--skip-llm` | Use deterministic mock extractor | — |
 | `--endpoint URL` | Ollama endpoint | `http://localhost:11434/api/generate` |
 | `--model NAME` | Ollama model name | `qwen2.5:7b` |
+| `--gemini` | Use Gemini cloud extraction instead of local LLM | — |
+| `--gemini-key` | Gemini API key | — |
+| `--gemini-model` | Gemini model name | `gemini-2.5-flash` |
+| `--config PATH` | Path to config file | `.nija-config.json` |
 | `--help, -h` | Show help | — |
 | `--version, -v` | Show version | — |
 
@@ -166,10 +170,9 @@ npm run check -- test-spec.md --endpoint http://localhost:11434/api/generate --m
 
 | Area | Status |
 |------|--------|
-| LLMProvider abstraction | ADR documents adapter pattern — only `LocalModel` (Ollama) and `MockExtractor` exist |
-| Config file support | Docs reference `.nija-config.json` but no config loading is implemented |
-| Gemini/cloud LLM | Trust Engine Architecture describes Gemini integration — not implemented |
-| Multi-language generators | Generator interface defined — only Jest/TypeScript templates exist |
+| LLMProvider abstraction | No formal adapter interface — LocalModel, MockExtractor, and Gemini API are standalone |
+| Prompt versioning | Not implemented — no `.nijaspec/prompts/` directory |
+| Post-generation validation | Basic string checks only — no TypeScript parser or ESLint validation |
 | Hosted mode | FullStackArchitecture describes FastAPI backend + PostgreSQL — not implemented |
 | Web dashboard | UI-UX.md describes React dashboard — not implemented |
 

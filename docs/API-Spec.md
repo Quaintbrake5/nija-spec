@@ -1,5 +1,7 @@
 ﻿# NijaSpec — Hosted API Specification (REST + OpenAPI)
 
+> **Status: Planned (V1+)** — This API does not exist yet. The current product is a CLI-only tool.
+
 
 
 **Doc status:** Draft (v0.1)  
