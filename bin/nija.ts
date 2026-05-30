@@ -26,6 +26,23 @@ function getArgValue(args: string[], flag: string): string | undefined {
   return undefined;
 }
 
+function generateManifest(specFile: string, breaches: any[], patchesDir: string): void {
+  const manifest = {
+    timestamp: new Date().toISOString(),
+    specFile,
+    breachesDetected: breaches.length,
+    patchesGenerated: breaches.length,
+    status: breaches.length === 0 ? 'PASS' : 'FAIL',
+    frameworks: [...new Set(breaches.map(b => b.framework))]
+  };
+  const manifestPath = path.join(patchesDir, '..', 'run-manifest.json');
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+}
+
+function validateTestOutput(code: string): boolean {
+  return code.includes('test(') && code.includes('expect(') && !code.includes('SyntaxError');
+}
+
 async function main(): Promise<void> {
   const args: string[] = process.argv.slice(2);
 
@@ -35,7 +52,14 @@ async function main(): Promise<void> {
 Validates an architecture specification against Nigerian regulatory frameworks (NDPA, CBN).
 
 Usage:
-  nija-audit check <path-to-spec.md> [options]
+  nija-audit <command> [arguments] [options]
+
+Commands:
+  init                          Create .nija/ directory and sample test-spec.md
+  generate <spec.md>            Run full compliance check pipeline
+  verify                        Execute generated tests in .nija/patches/
+  estimate <spec.md>            Count sections and estimate token usage
+  check <spec.md>               Alias for generate (backward compatible)
 
 Options:
   --skip-llm       Use deterministic mock extractor instead of local LLM
@@ -45,8 +69,10 @@ Options:
   --version, -v    Show version number
 
 Examples:
-  nija-audit check test-spec.md --skip-llm
-  nija-audit --help`);
+  nija-audit init
+  nija-audit generate test-spec.md --skip-llm
+  nija-audit verify
+  nija-audit estimate test-spec.md`);
     process.exit(0);
   }
 
@@ -56,10 +82,93 @@ Examples:
   }
 
   const command: string | undefined = args[0];
-  const filePath: string | undefined = args[1];
 
-  if (command !== 'check' || !filePath) {
-    console.log('Usage: nija-audit check <path-to-spec.md>');
+  // Handle init subcommand
+  if (command === 'init') {
+    const nijaDir = path.join(process.cwd(), '.nija');
+    if (!fs.existsSync(nijaDir)) {
+      fs.mkdirSync(nijaDir, { recursive: true });
+      console.log('✅ Created .nija/ directory');
+    } else {
+      console.log('ℹ️  .nija/ directory already exists');
+    }
+    const specPath = path.join(process.cwd(), 'test-spec.md');
+    if (!fs.existsSync(specPath)) {
+      const sampleSpec = `# Architecture Specification
+
+## 1. Data Storage
+Describe how data is stored and encrypted at rest.
+
+## 2. User Authentication
+Describe authentication mechanisms and session management.
+
+## 3. Data Retention
+Describe data retention and deletion policies.
+
+## 4. Cross-Border Transfer
+Describe any cross-border data transfer mechanisms.
+
+## 5. Incident Response
+Describe incident response and breach notification procedures.
+`;
+      fs.writeFileSync(specPath, sampleSpec);
+      console.log('✅ Created sample test-spec.md');
+    } else {
+      console.log('ℹ️  test-spec.md already exists');
+    }
+    process.exit(0);
+  }
+
+  // Handle verify subcommand
+  if (command === 'verify') {
+    const patchesDir = path.join(process.cwd(), '.nija', 'patches');
+    if (!fs.existsSync(patchesDir)) {
+      console.error('❌ No .nija/patches/ directory found. Run "generate" first.');
+      process.exit(1);
+    }
+    console.log('🧪 Running generated tests via Jest...');
+    const { execSync } = require('child_process');
+    try {
+      execSync('npx jest .nija/patches/', { stdio: 'inherit', cwd: process.cwd() });
+      console.log('✅ All tests passed');
+      process.exit(0);
+    } catch {
+      console.error('❌ Some tests failed');
+      process.exit(1);
+    }
+  }
+
+  // Handle estimate subcommand
+  if (command === 'estimate') {
+    const filePath = args[1];
+    if (!filePath) {
+      console.error('❌ Usage: nija-audit estimate <path-to-spec.md>');
+      process.exit(1);
+    }
+    if (!fs.existsSync(filePath)) {
+      console.error(`❌ Error: File not found: ${filePath}`);
+      process.exit(1);
+    }
+    const content = fs.readFileSync(filePath, 'utf8');
+    const lines = content.split('\n').length;
+    const sections = (content.match(/^##\s/gm) || []).length;
+    const estimatedTokens = lines * 10;
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('  ESTIMATION REPORT');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log(`  File:           ${filePath}`);
+    console.log(`  Lines:          ${lines}`);
+    console.log(`  Sections:       ${sections}`);
+    console.log(`  Est. tokens:    ${estimatedTokens}`);
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    process.exit(0);
+  }
+
+  // For check/generate: require filePath
+  const filePath: string | undefined = args[1];
+  if ((command !== 'check' && command !== 'generate') || !filePath) {
+    console.error('❌ Usage: nija-audit generate <path-to-spec.md>');
+    console.error('   Run "nija-audit --help" for available commands.');
     process.exit(1);
   }
 
@@ -128,6 +237,8 @@ Examples:
 
     if (breaches.length === 0) {
       console.log('✅ No breaches detected. Architecture is compliant.');
+      const patchesDir = path.join(process.cwd(), '.nija');
+      generateManifest(filePath, [], patchesDir);
     } else {
       breaches.forEach(b => {
         console.log(`❌ [${b.id}] ${b.severity} — ${b.finding}`);
@@ -148,13 +259,18 @@ Examples:
         const test = TestGenerator.generateTest(b.id, extractedData);
 
         fs.writeFileSync(path.join(patchesDir, `${b.id}-fix.md`), patch);
-        fs.writeFileSync(path.join(patchesDir, `${b.id}-test.ts`), test);
 
-        console.log(`🛠️  Patch generated: .nija/patches/${b.id}-fix.md`);
-        console.log(`🛠️  Test generated:  .nija/patches/${b.id}-test.ts`);
+        if (validateTestOutput(test)) {
+          fs.writeFileSync(path.join(patchesDir, `${b.id}-test.ts`), test);
+          console.log(`🛠️  Patch generated: .nija/patches/${b.id}-fix.md`);
+          console.log(`🛠️  Test generated:  .nija/patches/${b.id}-test.ts`);
+        } else {
+          console.error(`⚠️  Test for ${b.id} failed validation — skipping write`);
+        }
       });
 
       console.log('\nPROCESS EXITED WITH CODE 1. Pipeline halted.');
+      generateManifest(filePath, breaches, patchesDir);
       process.exit(1);
     }
 

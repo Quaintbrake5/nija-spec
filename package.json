@@ -9,6 +9,10 @@
     "test:coverage": "jest --coverage",
     "typecheck": "tsc --noEmit",
     "check": "ts-node bin/nija.ts check",
+    "generate": "ts-node bin/nija.ts generate",
+    "init": "ts-node bin/nija.ts init",
+    "verify": "ts-node bin/nija.ts verify",
+    "estimate": "ts-node bin/nija.ts estimate",
     "lint": "tsc --noEmit"
   },
   "keywords": [

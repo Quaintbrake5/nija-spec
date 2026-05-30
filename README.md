@@ -166,11 +166,10 @@ npm run check -- test-spec.md --endpoint http://localhost:11434/api/generate --m
 
 | Area | Status |
 |------|--------|
-| Template files | `templates/` directory exists but is empty — patches/tests use hardcoded strings in TypeScript |
 | LLMProvider abstraction | ADR documents adapter pattern — only `LocalModel` (Ollama) and `MockExtractor` exist |
 | Config file support | Docs reference `.nija-config.json` but no config loading is implemented |
-| Ollama configuration | Endpoint and model are configurable via CLI flags but not via config file |
 | Gemini/cloud LLM | Trust Engine Architecture describes Gemini integration — not implemented |
+| Multi-language generators | Generator interface defined — only Jest/TypeScript templates exist |
 | Hosted mode | FullStackArchitecture describes FastAPI backend + PostgreSQL — not implemented |
 | Web dashboard | UI-UX.md describes React dashboard — not implemented |
 
