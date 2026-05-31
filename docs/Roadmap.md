@@ -1,7 +1,7 @@
 # NijaSpec — Roadmap
 
 **Doc status:** Draft (v0.1)  
-**Last updated:** 2026-05-23  
+**Last updated:** 2026-05-30  
 
 ---
 
@@ -15,7 +15,7 @@
 
 ## 2) Milestones
 
-### v0 (MVP) — CLI + CI Verification
+### v0 (MVP) — CLI + CI Verification ✅ Complete (2026-05-30)
 Deliverables:
 - `LLMProvider` adapters + fallback manager
 - token estimate + NGN cost preview
@@ -29,7 +29,7 @@ Exit criteria:
 - generated tests runnable rate ≥ 95% on internal sample sets
 - at least 6 frameworks supported end-to-end with fixtures (JS/TS, Go, Java, C#, Python, PHP)
 
-### v0.1 — Determinism & Safety Hardening
+### v0.1 — Determinism & Safety Hardening ✅ Complete (2026-05-30)
 Deliverables:
 - prompt versioning + manifest provenance
 - post-generation validation layer (syntax + invariants)
@@ -40,7 +40,7 @@ Exit criteria:
 - repeated runs with same inputs produce stable output within tolerance
 - no secrets appear in logs/artifacts in test suite
 
-### v0.2 — Generator Interface Design
+### v0.2 — Generator Interface Design ✅ Complete (2026-05-30)
 Deliverables:
 - Define standard generator interface: generate(semanticMap: JSON): string, validate(code: string): boolean
 - Implement registry of supported languages and their corresponding generators
@@ -51,7 +51,9 @@ Exit criteria:
 - Generator interface is implemented and usable for at least one language
 - CLI can generate tests for a specified language using the interface
 
-### v1 (Optional) — Hosted Mode (API + Web)
+> **Note:** v0 was published to npm as `nija-audit@1.0.0` on 2026-05-30.
+
+### v1 (Optional) — Hosted Mode (API + Web) 🔜 Not Started
 Deliverables:
 - org/project/spec/run management (API)
 - UI report viewer + artifact download

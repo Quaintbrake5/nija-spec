@@ -1,7 +1,7 @@
 {
-  "name": "nija-audit",
+  "name": "nija",
   "version": "1.0.0",
-  "description": "Nigeria-first Compliance-as-Code architectural auditing engine",
+  "description": "Architecture Compliance, Automated - validates specs against Nigerian regulatory frameworks",
   "scripts": {
     "build": "tsc",
     "dev": "ts-node bin/nija.ts",
@@ -49,7 +49,7 @@
     "axios": "^1.7.0"
   },
   "bin": {
-    "nija-audit": "dist/bin/nija.js"
+    "nija": "dist/bin/nija.js"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

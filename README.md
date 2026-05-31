@@ -1,14 +1,14 @@
-# NaijaSpec — Documentation Index
+# NIJA-SPEC — Documentation Index
 
-**Project:** NaijaSpec / nija-audit v1.0.0
+**Project:** NIJA-SPEC v1.0.0
 **Last updated:** 2026-05-30
 **Status:** Functional CLI engine — 6-breach detection, template remediation, 65 passing tests
 
 ---
 
-## What Is NaijaSpec?
+## What Is NIJA-SPEC?
 
-NaijaSpec is a **Nigeria-first Compliance-as-Code architectural auditing engine**. It reads a Markdown-based architecture specification, validates it against Nigerian regulatory frameworks (NDPA, CBN Cybersecurity Framework, SEC), and produces deterministic gap analysis reports, remediation patches, and integration test scaffolding.
+NIJA-SPEC is a **Nigeria-first Compliance-as-Code architectural auditing engine**. It reads a Markdown-based architecture specification, validates it against Nigerian regulatory frameworks (NDPA, CBN Cybersecurity Framework, SEC), and produces deterministic gap analysis reports, remediation patches, and integration test scaffolding.
 
 **Core principle — the Trust Engine:** LLMs output structured JSON only (reasoning). Local deterministic code generates template-based code only (syntax). Never mix the two. This eliminates LLM hallucination risk in generated output.
 

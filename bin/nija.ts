@@ -102,36 +102,43 @@ async function main(): Promise<void> {
     && !process.argv.includes('-v');
 
   if (showBanner) {
-    console.log(`
-  ┌───────────────────────────────────────────────────┐
-  │                                                   │
-  │  ███╗   ██╗██╗ ██████╗ ██╗  ██╗                   │
-  │  ████╗  ██║██║██╔════╝ ██║  ██║                   │
-  │  ██╔██╗ ██║██║██║      ███████║                   │
-  │  ██║╚██╗██║██║██║      ██╔══██║                   │
-  │  ██║ ╚████║██║╚██████╗ ██║  ██║                   │
-  │  ╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═╝  ╚═╝                   │
-  │                                                   │
-  │  Nigeria-first Compliance-as-Code                 │
-  │  Architectural Auditing Engine                    │
-  │                                                   │
-  │  ${VERSION.padEnd(49)}│
-  └───────────────────────────────────────────────────┘
+    const isInteractive = !!(process.stdout && (process.stdout as any).isTTY) && !process.env.CI;
 
-  Type "nija-audit --help" for available commands.
-  Type "nija-audit init" to set up your project.
-`);
+    // Always emit a machine-parseable version line to stderr
+    console.error(`NIJA ${VERSION}`);
+
+    if (isInteractive) {
+      // Decorative ASCII art banner — only rendered in interactive terminals
+      const banner = [
+        '',
+        '        _  _ _  _ ___ _    ___  ____ ___',
+        '       | || | || | __| |  / _ \\|  _ \\ __|',
+        '       | __ | __ | _|| |_| (_) | | | _|',
+        '       |_||_|_||_|___|____\\___/|_| |_|',
+        '',
+        '  "Architecture Compliance, Automated"',
+        `              ${VERSION}`,
+        '',
+        '  Type "nija --help" for available commands.',
+        '',
+      ];
+      try {
+        process.stderr.write(banner.join('\n') + '\n');
+      } catch {
+        // ignore write errors during banner rendering
+      }
+    }
   }
 
   const args: string[] = process.argv.slice(2);
 
   if (args.includes('--help') || args.includes('-h')) {
-    console.log(`nija-audit v1.0.0 — Nigeria-first Compliance-as-Code Architectural Auditing Engine
+    console.log(`NIJA v1.0.0 — Architecture Compliance, Automated
 
-Validates an architecture specification against Nigerian regulatory frameworks (NDPA, CBN).
+Validates architecture specifications against Nigerian regulatory frameworks (NDPA, CBN).
 
 Usage:
-  nija-audit <command> [arguments] [options]
+  nija <command> [arguments] [options]
 
 Commands:
   init                          Create .nija/ directory and sample test-spec.md
@@ -152,15 +159,15 @@ Options:
   --version, -v    Show version number
 
 Examples:
-  nija-audit init
-  nija-audit generate test-spec.md --skip-llm
-  nija-audit verify
-  nija-audit estimate test-spec.md`);
+  nija init
+  nija generate test-spec.md --skip-llm
+  nija verify
+  nija estimate test-spec.md`);
     process.exit(0);
   }
 
   if (args.includes('--version') || args.includes('-v')) {
-    console.log('nija-audit v1.0.0');
+    console.log('NIJA v1.0.0');
     process.exit(0);
   }
 
@@ -225,7 +232,7 @@ Describe incident response and breach notification procedures.
   if (command === 'estimate') {
     const filePath = args[1];
     if (!filePath) {
-      console.error('❌ Usage: nija-audit estimate <path-to-spec.md>');
+      console.error('❌ Usage: nija estimate <path-to-spec.md>');
       process.exit(1);
     }
     if (!fs.existsSync(filePath)) {
@@ -257,14 +264,14 @@ Describe incident response and breach notification procedures.
   // For check/generate: require filePath
   const filePath: string | undefined = args[1];
   if ((command !== 'check' && command !== 'generate') || !filePath) {
-    console.error('❌ Usage: nija-audit generate <path-to-spec.md>');
-    console.error('   Run "nija-audit --help" for available commands.');
+    console.error('❌ Usage: nija generate <path-to-spec.md>');
+    console.error('   Run "nija --help" for available commands.');
     process.exit(1);
   }
 
   try {
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('  nija-audit v1.0.0 — Compliance Verification Engine');
+    console.log('  NIJA v1.0.0 — Compliance Verification Engine');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
     // Phase 0: Iron Gate

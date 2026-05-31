@@ -1,6 +1,6 @@
-# Running nija-audit
+# Running nija-spec
 
-This guide explains how to set up and run the `nija-audit` compliance verification engine.
+This guide explains how to set up and run the `nija-spec` compliance verification engine.
 
 ## 🛠️ Prerequisites
 
@@ -25,6 +25,8 @@ npm install
 Use the `check` command to validate an architecture specification file:
 ```bash
 npx ts-node bin/nija.ts check <path-to-your-spec.md>
+# Or if installed globally:
+nija-spec check <path-to-your-spec.md>
 ```
 
 ## 🧪 Testing the Engine
@@ -56,6 +58,8 @@ Save the following content to a file named `test-spec.md`:
 ### Run the Audit
 ```bash
 npx ts-node bin/nija.ts check test-spec.md
+# Or if installed globally:
+nija-spec check test-spec.md
 ```
 
 ### Expected Results
@@ -64,4 +68,6 @@ The tool should:
 2. **Detect Breaches**: 
    - `BREACH-001`: Critical (Data Retention Policy Absent).
    - `BREACH-002`: High (TLS Version Unspecified/Low).
-3. **Generate Remediation**: Create `.nija/patches/BREACH-001-fix.md` and `.nija/patches/BREACH-002-fix.md`.
+   - `BREACH-004`: Critical (Foreign Data Residency Without Adequate Safeguards).
+   - `BREACH-005`: High (Multi-Factor Authentication Disabled).
+3. **Generate Remediation**: Create patches and tests for each breach in `.nija/patches/`.
