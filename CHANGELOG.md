@@ -29,3 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed CLAUDE.md and AGENTS.md false "no source code exists" claims
 - Added "Planned (V1+)" disclaimers to futuristic docs
 - Updated system-flow.mmd diagram to reflect actual 4-phase pipeline
+
+### Changed
+
+- Updated banner in README.md to a Unicode block-character style for better rendering across terminals 
