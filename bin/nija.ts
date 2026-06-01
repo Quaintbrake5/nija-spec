@@ -108,13 +108,16 @@ async function main(): Promise<void> {
     console.error(`NIJA ${VERSION}`);
 
     if (isInteractive) {
-      // Decorative ASCII art banner — only rendered in interactive terminals
+      // Decorative Unicode block-character banner — only rendered in interactive terminals
+      // Letters: N  I  J  A (6 rows, same style as LiteLLM)
       const banner = [
         '',
-        '        _  _ _  _ ___ _    ___  ____ ___',
-        '       | || | || | __| |  / _ \\|  _ \\ __|',
-        '       | __ | __ | _|| |_| (_) | | | _|',
-        '       |_||_|_||_|___|____\\___/|_| |_|',
+        '███╗   ██╗  ██╗    ██╗    ████╗ ',
+        '████╗  ██║  ██║    ██║   ██╔══██╗',
+        '██╔██╗ ██║  ██║    ██║   ███████║',
+        '██║╚██╗██║  ██║ ██╗ ██║   ██╔══██║',
+        '██║ ╚████║  ██║ ╚█████╟   ██║  ██║',
+        '╚═╝  ╚═══╝  ╚═╝   ╚════╝   ╚═╝  ╚═╝',
         '',
         '  "Architecture Compliance, Automated"',
         `              ${VERSION}`,

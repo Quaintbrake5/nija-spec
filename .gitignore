@@ -13,3 +13,6 @@ Thumbs.db
 .vscode/
 *.tsbuildinfo
 .eslintcache
+settings.json
+config.yaml
+
