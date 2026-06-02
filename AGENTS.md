@@ -21,7 +21,7 @@
 ## Verification & Quality
 
 - Definition of Done: see docs/SDLC.md (Section 5).
-- Testing strategy: see docs/TestingStrategy.md (unit, contract, golden tests).
+;; - Testing strategy: see docs/TestingStrategy.md (unit, contract, golden tests).
 - Security checks: see docs/Security.md (non-negotiable secret handling, CI policy).
 - Observability: run manifests are defined in docs/Observability.md.
 - Runbooks for incident response: see docs/Runbooks.md.

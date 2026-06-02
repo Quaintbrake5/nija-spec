@@ -85,7 +85,7 @@ Create a `.env` file in the root directory:
 
 ```env
 # API Configuration
-VITE_API_BASE_URL=http://localhost:8000/api
+VITE_API_BASE_URL=http://localhost:8001/api
 
 # Google OAuth (if using)
 VITE_GOOGLE_CLIENT_ID=your-google-client-id
@@ -94,8 +94,9 @@ VITE_GOOGLE_CLIENT_ID=your-google-client-id
 ### Vite Configuration
 
 The Vite configuration includes:
+
 - Path aliases (`@/` for `src/`)
-- API proxy to backend (`/api` to `http://localhost:8000`)
+- API proxy to backend (`/api` to `http://localhost:8001`)
 - Code splitting for vendor libraries
 
 ## Development
@@ -110,7 +111,7 @@ This will start the development server at `http://localhost:5173`.
 
 ### API Integration
 
-The frontend proxies API requests to the backend at `http://localhost:8000`. Ensure the backend is running for full functionality.
+The frontend proxies API requests to the backend at `http://localhost:8001`. Ensure the backend is running for full functionality.
 
 ### Code Quality
 
@@ -148,6 +149,7 @@ npm run preview
 ## Accessibility
 
 This application follows WCAG 2.1 AA guidelines:
+
 - Semantic HTML elements
 - Proper heading hierarchy
 - ARIA labels and roles

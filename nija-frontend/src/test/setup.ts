@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 
 // Mock matchMedia
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(globalThis, 'matchMedia', {
   writable: true,
   value: (query: string) => ({
     matches: false,
@@ -22,13 +22,13 @@ class MockIntersectionObserver {
   disconnect = () => null;
 }
 
-Object.defineProperty(window, 'IntersectionObserver', {
+Object.defineProperty(globalThis, 'IntersectionObserver', {
   writable: true,
   value: MockIntersectionObserver,
 });
 
 // Mock scrollTo
-Object.defineProperty(window, 'scrollTo', {
+Object.defineProperty(globalThis, 'scrollTo', {
   writable: true,
   value: () => null,
 });

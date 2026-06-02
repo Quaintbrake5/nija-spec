@@ -15,4 +15,6 @@ Thumbs.db
 .eslintcache
 settings.json
 config.yaml
+.env
+.env.example
 
