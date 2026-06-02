@@ -1,0 +1,25 @@
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-layout-content {
+  flex: 1;
+  margin-left: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-layout-main {
+  flex: 1;
+  margin-top: 64px;
+  padding: var(--spacing-6);
+  background-color: var(--color-bg);
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  .main-layout-content {
+    margin-left: 0;
+  }
+}
