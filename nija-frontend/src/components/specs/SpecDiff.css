@@ -1,0 +1,117 @@
+.spec-diff {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.spec-diff__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-3) var(--spacing-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+}
+
+.spec-diff__stat {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.spec-diff__stat--additions {
+  color: var(--color-success-dark);
+}
+
+.spec-diff__stat--deletions {
+  color: var(--color-danger-dark);
+}
+
+.spec-diff__stat-icon {
+  display: flex;
+  align-items: center;
+}
+
+.spec-diff__container {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+}
+
+.spec-diff__line {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.spec-diff__line:last-child {
+  border-bottom: none;
+}
+
+.spec-diff__line-number {
+  flex-shrink: 0;
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 var(--spacing-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  background-color: var(--color-surface);
+  user-select: none;
+  border-right: 1px solid var(--color-border-light);
+}
+
+.spec-diff__line-indicator {
+  flex-shrink: 0;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  user-select: none;
+}
+
+.spec-diff__line-content {
+  flex: 1;
+  padding: var(--spacing-1) var(--spacing-3);
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: var(--line-height-relaxed);
+}
+
+.spec-diff__line--add {
+  background-color: var(--color-success-light);
+}
+
+.spec-diff__line--add .spec-diff__line-indicator {
+  color: var(--color-success-dark);
+}
+
+.spec-diff__line--delete {
+  background-color: var(--color-danger-light);
+}
+
+.spec-diff__line--delete .spec-diff__line-indicator {
+  color: var(--color-danger-dark);
+}
+
+.spec-diff__line--unchanged {
+  background-color: var(--color-bg);
+}
+
+.spec-diff__line--unchanged .spec-diff__line-indicator {
+  color: var(--color-text-tertiary);
+}
+
+.spec-diff__empty {
+  padding: var(--spacing-8);
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}

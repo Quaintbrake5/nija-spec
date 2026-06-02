@@ -1,0 +1,97 @@
+.specs-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-8);
+}
+
+.specs-page__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: var(--spacing-6) 0 var(--spacing-6);
+  gap: var(--spacing-4);
+}
+
+.specs-page__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-1);
+}
+
+.specs-page__subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.specs-page__loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-20) 0;
+}
+
+.specs-page__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.specs-page__version-card {
+  cursor: default;
+}
+
+.specs-page__version-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+}
+
+.specs-page__version-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.specs-page__version-date {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.specs-page__version-hash {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.specs-page__upload-error {
+  margin-top: var(--spacing-4);
+}
+
+@media (max-width: 768px) {
+  .specs-page {
+    padding: var(--spacing-4);
+  }
+
+  .specs-page__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .specs-page__version-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .specs-page__title {
+    font-size: var(--font-size-xl);
+  }
+}

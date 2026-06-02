@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useAuth, useOrganization } from '@/stores';
+import { Menu, ChevronDown } from 'lucide-react';
 import './Topbar.css';
 
 interface TopbarProps {
@@ -26,7 +27,7 @@ export const Topbar = ({ onMenuClick }: TopbarProps) => {
           onClick={onMenuClick}
           aria-label="Toggle menu"
         >
-          ☰
+          <Menu size={20} />
         </button>
         <div className="topbar-breadcrumbs">
           <span className="topbar-app-name">NijaSpec</span>
@@ -50,7 +51,7 @@ export const Topbar = ({ onMenuClick }: TopbarProps) => {
               aria-haspopup="true"
             >
               Switch Org{' '}
-              <span className="topbar-dropdown-arrow">▼</span>
+              <ChevronDown className="topbar-dropdown-arrow" size={14} />
             </button>
             {showOrgDropdown && (
               <div className="topbar-dropdown-menu">
@@ -89,7 +90,7 @@ export const Topbar = ({ onMenuClick }: TopbarProps) => {
               </span>
             )}
             <span className="topbar-user-name">{user?.name || 'User'}</span>
-            <span className="topbar-dropdown-arrow">▼</span>
+            <ChevronDown className="topbar-dropdown-arrow" size={14} />
           </button>
           {showUserDropdown && (
             <div className="topbar-dropdown-menu">

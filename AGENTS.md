@@ -1,52 +1,51 @@
 # Agent Guidance for NaijaSpec Repository
 
-## Navigation
+## Essential Commands
 
-- Documentation is organized under docs/ by category:
-  - Product & Planning: PRD.md, AppFlow.md, GettingStarted.md, Roadmap.md
-  - Engineering: FullStackArchitecture.md, SDLC.md, CI-CD.md, TestingStrategy.md, Security.md, Observability.md, Deployment.md, DataModel.md, API-Spec.md
-  - Design: UI-UX.md
-  - Diagrams: system-flow.mmd (Mermaid syntax)
-- Architecture Decision Records (ADRs) are in docs/ADR/
-- The README.md serves as a master index; keep it updated when adding/removing docs.
+- **Core workflow**: `npm run check -- <spec.md> [--skip-llm]` - validates architecture spec against Nigerian regulations
+- **Development**: `npm run dev` - runs CLI with ts-node for immediate feedback
+- **Testing**: `npm test` - runs Jest test suite
+- **Type checking**: `npm run typecheck` - equivalent to `tsc --noEmit`
+- **Building**: `npm run build` - compiles TypeScript to dist/
+- **Linting**: `npm run lint` - runs typecheck (no separate ESLint)
 
-## Key Starting Points
+## Key Architecture Points
 
-- New contributors: read docs/GettingStarted.md for a 10-minute walkthrough.
-- Product understanding: read docs/PRD.md (Problem Statement, Goals, Success Metrics).
-- Technical foundation: read docs/FullStackArchitecture.md, docs/SDLC.md, and NijaSpec_TrustEngine_Architecture.md (core architectural approach).
-- API details: see docs/API-Spec.md (endpoints, auth, error format).
-- CLI/CI workflows: see docs/AppFlow.md and docs/CI-CD.md.
+- **Trust Engine Pattern**: Critical - LLMs only output structured JSON (reasoning), local deterministic code handles syntax/templates. Never mix LLM output with code generation.
+- **Pipeline Phases**: 
+  1. Iron Gate (deterministic validation)
+  2. Local Semantic Extraction (LLM with 3-strike retry or --skip-llm for mock)
+  3. Compliance Gap Analysis (AJV validation)
+  4. Dual Enforcement (hard exit + patches + test scripts)
+- **Entry Point**: `bin/nija.ts` orchestrates the full pipeline
+- **Binaries**: After build, `nija` command available (points to `dist/bin/nija.js`)
 
-## Verification & Quality
+## Important Conventions
 
-- Definition of Done: see docs/SDLC.md (Section 5).
-;; - Testing strategy: see docs/TestingStrategy.md (unit, contract, golden tests).
-- Security checks: see docs/Security.md (non-negotiable secret handling, CI policy).
-- Observability: run manifests are defined in docs/Observability.md.
-- Runbooks for incident response: see docs/Runbooks.md.
+- **Documentation**: All docs under `docs/` by category; README.md is master index
+- **CLI Examples**: Use `nija-audit` as binary name in documentation (per existing AGENTS.md)
+- **Doc Front-matter**: All documentation should include `Doc status:` and `Last updated:` headers
+- **Links**: Use relative paths between docs (e.g., `./API-Spec.md`)
+- **Diagrams**: Mermaid syntax (*.mmd files in docs/diagrams/)
 
-## Consistency Checks
+## Common Pitfalls to Avoid
 
-- Following the Trust Engine pattern, examples should demonstrate separation of reasoning (LLM) and deterministic local processing where applicable.
-- All docs should front-matter with Doc status: and Last updated:.
-- API examples in API-Spec.md should match JSON schemas implied by the text.
-- CLI command examples in AppFlow.md and GettingStarted.md should use `nija-audit` as the binary name.
-- Links between docs use relative paths (e.g., ./API-Spec.md).
+- **LLM Usage**: Never ask LLMs to generate syntactically-perfect code - violates Trust Engine principle
+- **README Updates**: Don't modify categorized sections manually without preserving structure
+- **Front-matter Dates**: Only update after reviewing content changes
+- **Top-level Folders**: Don't add outside `docs/` without consensus (see SDLC process)
+- **Config Priority**: CLI flags override `.nija-config.json` settings
 
-## Repo-Specific Conventions
+## CI/CD Information
 
-- Following Trust Engine principles, LLMs can generate documentation content (including code examples) but ONLY within documentation principles and specifications to avoid hallucination and derailment (spec-driven programming).
-- Versioning: docs use draft version numbers (v0.1) in header; no semantic versioning enforced.
-- The repo contains runnable TypeScript source code in `src/` and `bin/`.
-- When adding a new doc, list it in the appropriate section of README.md.
-- Diagrams are Mermaid (*.mmd); edit with a Mermaid previewer.
-- Avoid duplicating information: prefer linking to existing docs (e.g., API spec details live in API-Spec.md).
+- **GitHub Actions**: Runs on Ubuntu with Node.js 18.x and 20.x
+- **Workflow Order**: lint → typecheck → test → build → upload artifacts
+- **Artifacts**: `.nija/` directory contents retained for 7 days
+- **Triggers**: Push and PR to master branch
 
-## Common Agent Mistakes to Avoid
+## Project Structure Highlights
 
-- Do not ask LLMs to generate raw, syntactically-perfect code or documentation without clear specifications and separation of concerns.
-- Do not conflate LLM reasoning strength with local system's syntactic guarantee — maintain clear separation of phases.
-- Do not update README.md manually without preserving the categorized sections.
-- Do not modify front-matter dates without reviewing doc content.
-- Do not add new top-level folders outside docs/ without consensus (see SDLC for process).
+- **Source**: TypeScript in `src/` and `bin/`
+- **Templates**: Handlebar templates in `templates/` for remediation
+- **Schemas**: JSON schemas in `schemas/` for AJV validation
+- **Data**: `.nijaspec/` directory for runtime data

@@ -1,5 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useOrganization } from '@/stores';
+import { LayoutDashboard, FolderOpen, PlayCircle, Settings, ShieldCheck } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import './Sidebar.css';
 
 interface SidebarProps {
@@ -7,15 +9,21 @@ interface SidebarProps {
   onClose: () => void;
 }
 
+interface NavItem {
+  path: string;
+  label: string;
+  icon: LucideIcon;
+}
+
+const navItems: NavItem[] = [
+  { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { path: '/projects', label: 'Projects', icon: FolderOpen },
+  { path: '/runs', label: 'Run History', icon: PlayCircle },
+  { path: '/settings', label: 'Settings', icon: Settings },
+];
+
 export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const { currentOrganization } = useOrganization();
-
-  const navItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-    { path: '/projects', label: 'Projects', icon: '📁' },
-    { path: '/runs', label: 'Run History', icon: '▶️' },
-    { path: '/settings', label: 'Settings', icon: '⚙️' },
-  ];
 
   const orgId = currentOrganization?.id;
 
@@ -31,7 +39,10 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       )}
       <aside className={`sidebar ${isOpen ? 'sidebar-open' : ''}`}>
         <div className="sidebar-header">
-          <h2 className="sidebar-title">NijaSpec</h2>
+          <div className="sidebar-brand">
+            <ShieldCheck className="sidebar-logo" size={24} />
+            <h2 className="sidebar-title">NijaSpec</h2>
+          </div>
           {currentOrganization && (
             <div className="sidebar-org">
               <span className="sidebar-org-name">{currentOrganization.name}</span>
@@ -41,19 +52,22 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         </div>
 
         <nav className="sidebar-nav">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={orgId ? `${item.path}/${orgId}` : item.path}
-              className={({ isActive }) =>
-                `sidebar-link ${isActive ? 'sidebar-link-active' : ''}`
-              }
-              onClick={onClose}
-            >
-              <span className="sidebar-icon">{item.icon}</span>
-              <span className="sidebar-label">{item.label}</span>
-            </NavLink>
-          ))}
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.path}
+                to={orgId ? `${item.path}/${orgId}` : item.path}
+                className={({ isActive }) =>
+                  `sidebar-link ${isActive ? 'sidebar-link-active' : ''}`
+                }
+                onClick={onClose}
+              >
+                <Icon className="sidebar-icon" size={20} />
+                <span className="sidebar-label">{item.label}</span>
+              </NavLink>
+            );
+          })}
         </nav>
 
         <div className="sidebar-footer">

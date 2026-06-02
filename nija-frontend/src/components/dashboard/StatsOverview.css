@@ -1,0 +1,47 @@
+.stats-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-4);
+}
+
+.stats-overview__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-5);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.stats-overview__card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stats-overview__card-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.stats-overview__card-icon {
+  color: var(--color-text-tertiary);
+}
+
+.stats-overview__card-value {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-tight);
+  margin: 0;
+}
+
+.stats-overview__card-value--success {
+  color: var(--color-success);
+}
+
+.stats-overview__card-value--info {
+  color: var(--color-info);
+}

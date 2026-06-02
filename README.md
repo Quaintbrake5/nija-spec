@@ -1,8 +1,8 @@
 # NIJA-SPEC — Documentation Index
 
 **Project:** NIJA-SPEC v1.0.0
-**Last updated:** 2026-05-30
-**Status:** Functional CLI engine — 6-breach detection, template remediation, 65 passing tests
+**Last updated:** 2026-06-02
+**Status:** Full-stack implementation — CLI engine + React web dashboard, 6-breach detection, template remediation, 200+ passing tests
 
 ---
 
@@ -85,6 +85,7 @@ bin/nija.ts                              CLI entry point — orchestrates the fu
 | [Deployment.md](docs/Deployment.md) | Deployment philosophy — CLI packaging, web/API deployment, secrets management |
 | [tech-stack.md](docs/tech-stack.md) | Tech stack summary — TypeScript, AJV, Ollama, React, FastAPI, PostgreSQL |
 | [Runbooks.md](docs/Runbooks.md) | Incident playbooks — LLM outage, token spike, secret leakage, CI misconfig |
+| [nija-frontend/README.md](nija-frontend/README.md) | Frontend implementation — React 19 + Vite, TanStack Query, React Router v7, lucide-react |
 
 ### Architecture Decision Records
 
@@ -171,5 +172,5 @@ npm run check -- test-spec.md --endpoint http://localhost:11434/api/generate --m
 | Area | Status |
 |------|--------|
 | Hosted mode | FullStackArchitecture describes FastAPI backend + PostgreSQL — not implemented |
-| Web dashboard | UI-UX.md describes React dashboard — not implemented |
+| Web dashboard | UI-UX.md describes React dashboard — **IMPLEMENTED** (see nija-frontend/) |
 

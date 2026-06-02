@@ -4,18 +4,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Common Commands
 
-### Development
+### Backend Development
 - Build: `npm run build`
-- Type check: `npm run typecheck`
+- Dev mode: `npm run dev` (runs ts-node bin/nija.ts)
 - Test: `npm test` (runs all Jest tests)
 - Test single file: `npm test -- <path-to-file>`
-
-### CLI Tooling (nija-audit)
+- Test with coverage: `npm run test:coverage`
+- Type check: `npm run typecheck`
+- Lint: `npm run lint` (equivalent to tsc --noEmit)
 - Initialize project: `nija-audit init`
 - Run compliance check: `nija-audit generate <spec.md> --skip-llm`
 - Verify generated tests: `nija-audit verify`
 - Estimate tokens: `nija-audit estimate <spec.md>`
 - Show help: `nija-audit --help`
+
+### Frontend Development
+- Dev server: `npm run dev` (from nija-frontend directory)
+- Build for production: `npm run build` (from nija-frontend directory)
+- Preview production build: `npm run preview` (from nija-frontend directory)
+- Run tests: `npm test` (from nija-frontend directory)
+- Run tests with coverage: `npm run test:coverage` (from nija-frontend directory)
+- Run tests with UI: `npm run test:ui` (from nija-frontend directory)
+- Lint code: `npm run lint` (from nija-frontend directory)
+- Format code: `npm run format` (from nija-frontend directory)
+- Type check: `npm run type-check` (from nija-frontend directory)
 
 ## Architecture & Structure
 
@@ -40,9 +52,26 @@ templates/
   tests/                                 Jest/TypeScript test templates (.ts)
   tests-python/                          PyTest/Python test templates (.py)
 schemas/                                 JSON schemas for compliance data and breach rules
+nija-frontend/                           React-based web dashboard
+  src/
+    components/
+      layout/                            Layout components (Sidebar, Topbar, MainLayout)
+      ui/                                Reusable UI primitives (Button, Input, etc.)
+      dashboard/                         Dashboard-specific components
+      specs/                             Specification viewing components
+      runs/                              Run history components
+      auth/                              Authentication components
+    hooks/                               Custom React hooks
+    utils/                               Utility functions
+    services/                            API service clients
+    stores/                              Context providers
+    types/                               TypeScript type definitions
+    styles/                              CSS files and design tokens
+    routes/                              Route definitions
 ```
 
 ### Tech Stack
-- **CLI**: TypeScript, Node.js, Jest, AJV (schema validation)
-- **LLMs**: Ollama/Qwen (local), MockExtractor (offline/CI), Gemini (cloud) — all via LLMProvider interface with fallback
-- **Testing**: Jest with ts-jest
+- **Backend CLI**: TypeScript, Node.js, Jest, AJV (schema validation)
+- **Backend LLMs**: Ollama/Qwen (local), MockExtractor (offline/CI), Gemini (cloud) — all via LLMProvider interface with fallback
+- **Backend Testing**: Jest with ts-jest
+- **Frontend**: React 19 with TypeScript, Vite, TanStack Query, React Router v6, React Hook Form + Zod, Axios, CSS Variables, Vitest + React Testing Library
