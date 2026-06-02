@@ -27,6 +27,8 @@
 - **Doc Front-matter**: All documentation should include `Doc status:` and `Last updated:` headers
 - **Links**: Use relative paths between docs (e.g., `./API-Spec.md`)
 - **Diagrams**: Mermaid syntax (*.mmd files in docs/diagrams/)
+- **Avoid Duplication**: Prefer linking to existing docs (e.g., API spec details in API-Spec.md) rather than copying content
+- **README Updates**: When adding a new doc, list it in the appropriate section of README.md
 
 ## Common Pitfalls to Avoid
 

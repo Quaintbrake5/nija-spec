@@ -34,7 +34,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### High-Level Design: The Trust Engine
 NijaSpec follows the **Trust Engine** pattern to ensure deterministic and syntactically correct code generation:
 1. **Iron Gate**: Parse Markdown, sanitize credentials, validate required sections.
-2. **Local Semantic Extraction**: Ollama/Qwen extracts structured JSON (or MockExtractor for offline/CI).
+2. **Local Semantic Extraction**: Gemini or MockExtractor (offline/CI) extracts structured JSON.
 3. **Compliance Gap Analysis**: AJV schema validation + Breach Detection Matrix (NDPA/CBN rules).
 4. **Remediation**: Template-based patches and test scaffolding written to `.nija/patches/`.
 

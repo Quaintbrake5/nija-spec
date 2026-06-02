@@ -16,9 +16,9 @@ To keep the project “startup-grade” (not brittle), treat the system as **thr
 3. **API (FastAPI)** — auth, org/project management, run history, billing hooks (optional v1+).
 
 > **Implementation Status:**
-> - ✅ CLI (Node/TypeScript) — Implemented as `nija-audit`
-> - ❌ Web (React + Vite) — Not started
-> - ❌ API (FastAPI) — Not started
+> - ✅ CLI (Node/TypeScript) — Implemented
+> - 🟡 Web (React + Vite) — In Progress (nija-frontend)
+> - 🟡 API (FastAPI) — In Progress (nija-backend)
 
 ---
 
@@ -26,17 +26,14 @@ To keep the project “startup-grade” (not brittle), treat the system as **thr
 
 ```
 /
-  apps/
-    web/                 # Vite + React + TS + CSS3
-    api/                 # FastAPI (Python)
-    cli/                 # Node + TS CLI (core orchestration)
-  packages/
-    spec/                # Spec parser/compiler + schemas (TS)
-    llm/                 # Provider adapters + cost engine (TS)
-    shared/              # Shared types, util
-    generators/          # Language-specific test generators
-  docs/
-  .github/
+  bin/                    # CLI entry point (nija.ts)
+  src/                    # CLI core logic (parser, engine, etc.)
+  nija-frontend/          # Web Dashboard (Vite + React + TS)
+  nija-backend/           # API Service (FastAPI + Python)
+  schemas/                # JSON schemas for compliance
+  templates/              # Patch and test templates
+  docs/                   # Architecture and guides
+  .github/                # CI/CD workflows
 ```
 
 Rationale:

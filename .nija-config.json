@@ -1,0 +1,39 @@
+{
+  "//": "NIJA Configuration File - Default Settings",
+  "//_description": "This file configures the nija-audit CLI behavior. Top-level keys are used for backward compatibility with the current orchestrator.",
+
+  "geminiApiKey": "",
+  "geminiModel": "gemini-2.5-flash",
+
+  "llm": {
+    "provider": "gemini",
+    "temperature": 0.2,
+    "maxTokens": 4096,
+    "timeout": 30000,
+    "retryAttempts": 3
+  },
+
+  "language": {
+    "preferred": "typescript",
+    "testFramework": "jest",
+    "style": "functional",
+    "namingConvention": "camelCase"
+  },
+
+  "output": {
+    "patchesDir": ".nija/patches",
+    "reportsDir": ".nija/reports",
+    "manifestFile": "run-manifest.json",
+    "format": "markdown"
+  },
+
+  "compliance": {
+    "frameworks": [
+      "NDPA",
+      "CBN"
+    ],
+    "strictMode": true,
+    "rulesToIgnore": [],
+    "severityThreshold": "medium"
+  }
+}

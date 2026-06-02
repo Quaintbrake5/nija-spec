@@ -7,11 +7,19 @@ export interface LocalModelConfig {
   timeout?: number;
 }
 
+/**
+ * @deprecated Ollama support is deprecated as of June 2026.
+ * Timeline: Full removal scheduled for December 2026.
+ * Recommended Alternatives:
+ * - Use Gemini cloud for higher accuracy and reliability.
+ * - Use MockExtractor for offline/CI environments.
+ */
 export class LocalModel implements LLMProvider {
   name = 'ollama';
   private config: LocalModelConfig;
 
   constructor(config: LocalModelConfig) {
+    console.warn('[Deprecation Warning] LocalModel (Ollama) is deprecated. Please migrate to Gemini cloud or MockExtractor before December 2026.');
     this.config = config;
   }
 
@@ -20,6 +28,7 @@ export class LocalModel implements LLMProvider {
    * Ensures no data leaves the machine for high-privacy architecture specs.
    */
   async extract(prompt: string, schema: any): Promise<any> {
+    console.warn('[Deprecation Warning] Ollama extraction is deprecated. Transition to Gemini cloud or MockExtractor.');
     try {
       const response = await axios.post(this.config.endpoint, {
         model: this.config.model,

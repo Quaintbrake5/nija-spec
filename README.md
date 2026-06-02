@@ -2,7 +2,7 @@
 
 **Project:** NIJA-SPEC v1.0.0
 **Last updated:** 2026-06-02
-**Status:** Full-stack implementation — CLI engine + React web dashboard, 6-breach detection, template remediation, 200+ passing tests
+**Status:** CLI engine complete; Web dashboard implemented; Backend in progress
 
 ---
 
@@ -171,6 +171,5 @@ npm run check -- test-spec.md --endpoint http://localhost:11434/api/generate --m
 
 | Area | Status |
 |------|--------|
-| Hosted mode | FullStackArchitecture describes FastAPI backend + PostgreSQL — not implemented |
-| Web dashboard | UI-UX.md describes React dashboard — **IMPLEMENTED** (see nija-frontend/) |
+| Hosted mode | FastAPI backend + PostgreSQL implementation — in progress |
 

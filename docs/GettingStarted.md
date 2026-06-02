@@ -31,7 +31,6 @@ This separation ensures:
 
 #### Prerequisites
 - Node.js (v18+)
-- Ollama (optional — for local LLM extraction)
 
 #### Installation
 ```bash
@@ -47,9 +46,9 @@ npm install
    npm run check -- test-spec.md --skip-llm
    ```
 
-2. **Run an audit with local Ollama** (requires `ollama pull qwen2.5:7b`)
+2. **Run an audit with cloud extraction** (requires Gemini API key)
    ```bash
-   npm run check -- test-spec.md
+   npm run check -- test-spec.md --gemini
    ```
 
 3. **View generated patches**
@@ -72,6 +71,7 @@ npm install
 
 ### Where to Go Next
 
+- **Ollama Migration**: Read [OllamaDeprecation.md](./OllamaDeprecation.md) for deprecation timeline and migration steps
 - **Product Understanding**: Read [PRD.md](./PRD.md) for problem statement, goals, and success metrics
 - **Technical Deep Dive**: Review [NijaSpec_TrustEngine_Architecture.md](../NijaSpec_TrustEngine_Architecture.md) for the core architectural approach
 - **API Details**: See [API-Spec.md](./API-Spec.md) for hosted API specifications
