@@ -136,18 +136,20 @@ Commands:
 
 Options:
   --skip-llm       Use deterministic mock extractor instead of local LLM
-  --endpoint URL   Ollama endpoint (default: http://localhost:11434/api/generate)
-  --model NAME     Ollama model name (default: qwen2.5:7b)
+  --endpoint URL   Ollama endpoint (DEPRECATED: use --gemini or --skip-llm)
+  --model NAME     Ollama model name (DEPRECATED: use --gemini or --skip-llm)
   --config PATH    Path to config file (default: .nija-config.json)
   --gemini         Use Gemini API for cloud extraction
   --gemini-key KEY Gemini API key (or set GEMINI_API_KEY env var)
   --gemini-model   Gemini model name (default: gemini-2.5-flash)
+  --lang LANG      Target language for tests (typescript, python, go, java, csharp, php)
   --help, -h       Show this help message
   --version, -v    Show version number
 
 Examples:
   nija init
   nija generate test-spec.md --skip-llm
+  nija generate test-spec.md --lang python
   nija verify
   nija estimate test-spec.md`);
         process.exit(0);
@@ -284,6 +286,12 @@ Describe incident response and breach notification procedures.
         const config = loadConfig();
         const skipLlm = process.argv.includes('--skip-llm') || process.env.NIJA_SKIP_LLM === 'true';
         const useGemini = process.argv.includes('--gemini') || process.env.NIJA_USE_GEMINI === 'true';
+        if (args.includes('--endpoint')) {
+            console.warn('⚠️  Warning: --endpoint is deprecated. Please use --gemini for cloud extraction or --skip-llm for deterministic mocks.');
+        }
+        if (args.includes('--model')) {
+            console.warn('⚠️  Warning: --model is deprecated. Please use --gemini for cloud extraction or --skip-llm for deterministic mocks.');
+        }
         const endpoint = getArgValue(args, '--endpoint') || process.env.NIJA_OLLAMA_ENDPOINT || config.endpoint || 'http://localhost:11434/api/generate';
         const model = getArgValue(args, '--model') || process.env.NIJA_OLLAMA_MODEL || config.model || 'qwen2.5:7b';
         const geminiApiKey = getArgValue(args, '--gemini-key') || process.env.GEMINI_API_KEY || config.geminiApiKey;
@@ -341,12 +349,23 @@ Describe incident response and breach notification procedures.
                 fs_1.default.mkdirSync(patchesDir, { recursive: true });
             breaches.forEach(b => {
                 const patch = patchGenerator_1.PatchGenerator.generatePatch(b.id, extractedData);
-                const test = testGenerator_1.TestGenerator.generateTest(b.id, extractedData);
+                const lang = getArgValue(args, '--lang') || 'typescript';
+                const test = testGenerator_1.TestGenerator.generateTest(b.id, extractedData, lang);
                 fs_1.default.writeFileSync(path_1.default.join(patchesDir, `${b.id}-fix.md`), patch);
+                const extensions = {
+                    'typescript': 'ts',
+                    'javascript': 'ts',
+                    'python': 'py',
+                    'go': 'go',
+                    'java': 'java',
+                    'csharp': 'cs',
+                    'php': 'php',
+                };
+                const ext = extensions[lang.toLowerCase()] || 'ts';
                 if (validateTestOutput(test)) {
-                    fs_1.default.writeFileSync(path_1.default.join(patchesDir, `${b.id}-test.ts`), test);
+                    fs_1.default.writeFileSync(path_1.default.join(patchesDir, `${b.id}-test.${ext}`), test);
                     console.log(`🛠️  Patch generated: .nija/patches/${b.id}-fix.md`);
-                    console.log(`🛠️  Test generated:  .nija/patches/${b.id}-test.ts`);
+                    console.log(`🛠️  Test generated:  .nija/patches/${b.id}-test.${ext}`);
                 }
                 else {
                     console.error(`⚠️  Test for ${b.id} failed validation — skipping write`);

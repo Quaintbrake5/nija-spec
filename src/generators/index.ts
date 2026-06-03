@@ -1,11 +1,11 @@
-export { Generator } from './interface';
-export { registerGenerator, getGenerator, listGenerators } from './registry';
-export { PythonGenerator } from './python';
-export { GoGenerator } from './go';
-export { JavaGenerator } from './java';
-export { CSharpGenerator } from './csharp';
-export { PhpGenerator } from './php';
-export { TypeScriptGenerator } from './typescript';
+import { Generator } from './interface';
+import { registerGenerator, getGenerator, listGenerators } from './registry';
+import { PythonGenerator } from './python';
+import { GoGenerator } from './go';
+import { JavaGenerator } from './java';
+import { CSharpGenerator } from './csharp';
+import { PhpGenerator } from './php';
+import { TypeScriptGenerator } from './typescript';
 
 // Initialize registry
 registerGenerator(new TypeScriptGenerator());
@@ -14,3 +14,12 @@ registerGenerator(new GoGenerator());
 registerGenerator(new JavaGenerator());
 registerGenerator(new CSharpGenerator());
 registerGenerator(new PhpGenerator());
+
+export { Generator };
+export { registerGenerator, getGenerator, listGenerators };
+export { PythonGenerator };
+export { GoGenerator };
+export { JavaGenerator };
+export { CSharpGenerator };
+export { PhpGenerator };
+export { TypeScriptGenerator };
