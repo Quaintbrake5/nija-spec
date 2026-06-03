@@ -38,6 +38,7 @@ This document provides implementation guidance for the NijaSpec web dashboard, w
 ### Technology Stack
 
 **Frontend:**
+
 - React 19 with TypeScript
 - Vite for build tooling
 - TanStack Query for server state management
@@ -47,6 +48,7 @@ This document provides implementation guidance for the NijaSpec web dashboard, w
 - CSS Variables for theming (no Tailwind)
 
 **Backend:**
+
 - Python 3.11+ with FastAPI
 - UV package manager (replaces pip)
 - SQLAlchemy ORM with PostgreSQL
@@ -57,6 +59,7 @@ This document provides implementation guidance for the NijaSpec web dashboard, w
 ## Implementation Status
 
 ### Phase 0: Project Setup ✅
+
 - [x] Initialize monorepo structure
 - [x] Setup React + Vite + TypeScript frontend
 - [x] Setup Python + FastAPI + UV backend
@@ -64,6 +67,7 @@ This document provides implementation guidance for the NijaSpec web dashboard, w
 - [x] Setup code quality tools
 
 ### Phase 1: Authentication System 🔄
+
 - [ ] Authentication service implementation
 - [ ] Login page with Google OAuth and Magic Link
 - [ ] Auth callback handler
@@ -71,6 +75,7 @@ This document provides implementation guidance for the NijaSpec web dashboard, w
 - [ ] Protected route component
 
 ### Phase 2: Organization and Project Management ⏳
+
 - [ ] Organization service
 - [ ] Organization selection interface
 - [ ] Project service
@@ -78,24 +83,28 @@ This document provides implementation guidance for the NijaSpec web dashboard, w
 - [ ] Project detail view
 
 ### Phase 3: Specification Management ⏳
+
 - [ ] Specification service
 - [ ] Specification viewer
 - [ ] Specification diff viewer
 - [ ] Specification upload interface
 
 ### Phase 4: Run History and Reporting ⏳
+
 - [ ] Run service
 - [ ] Run history view
 - [ ] Run detail view
 - [ ] Artifact management
 
 ### Phase 5: Dashboard and Navigation ⏳
+
 - [ ] Layout components (Sidebar, Topbar)
 - [ ] UI component library
 - [ ] Routing and navigation
 - [ ] Dashboard home page
 
 ### Phase 6: Testing and Quality Assurance ⏳
+
 - [ ] Unit tests
 - [ ] Component tests
 - [ ] Integration tests
@@ -103,6 +112,7 @@ This document provides implementation guidance for the NijaSpec web dashboard, w
 - [ ] Accessibility audit
 
 ### Phase 7: Deployment and Release ⏳
+
 - [ ] Build and deployment scripts
 - [ ] Error reporting and monitoring
 - [ ] Final quality assurance
@@ -110,6 +120,7 @@ This document provides implementation guidance for the NijaSpec web dashboard, w
 ## Directory Structure
 
 ### Frontend (`nija-frontend/`)
+
 ```
 src/
 ├── components/
@@ -130,6 +141,7 @@ src/
 ```
 
 ### Backend (`nija-backend/`)
+
 ```
 app/
 ├── api/v1/               # API endpoints
@@ -145,12 +157,14 @@ alembic/                  # Database migrations
 ## Development Setup
 
 ### Prerequisites
+
 - Node.js 18+
 - Python 3.11+
 - UV package manager
 - PostgreSQL (for production)
 
 ### Frontend Setup
+
 ```bash
 cd nija-frontend
 npm install
@@ -158,6 +172,7 @@ npm run dev
 ```
 
 ### Backend Setup
+
 ```bash
 cd nija-backend
 uv venv
@@ -170,25 +185,29 @@ uv run python main.py
 ## API Integration
 
 The frontend proxies API requests to the backend:
-- Frontend: http://localhost:5173
-- Backend: http://localhost:8000
+
+- Frontend: <http://localhost:5173>
+- Backend: <http://localhost:8000>
 - API Proxy: `/api` → `http://localhost:8000/api`
 
 ## Key Features
 
 ### Authentication
+
 - Google OAuth integration
 - Passwordless Magic Link authentication
 - JWT tokens with refresh rotation
 - Secure session management
 
 ### Dashboard
+
 - Organization switching
 - Project overview with metrics
 - Specification status tracking
 - Run history and reporting
 
 ### Accessibility
+
 - WCAG 2.1 AA compliance
 - Keyboard navigation
 - Screen reader support
@@ -197,12 +216,14 @@ The frontend proxies API requests to the backend:
 ## Testing Strategy
 
 ### Frontend Testing
+
 - Unit tests with Vitest
 - Component tests with React Testing Library
 - Integration tests for critical flows
 - Accessibility testing with jest-axe
 
 ### Backend Testing
+
 - Unit tests with Pytest
 - API endpoint testing
 - Database integration tests
@@ -211,6 +232,7 @@ The frontend proxies API requests to the backend:
 ## Deployment
 
 ### Development
+
 ```bash
 # Frontend
 cd nija-frontend && npm run dev
@@ -220,6 +242,7 @@ cd nija-backend && uv run python main.py
 ```
 
 ### Production
+
 - Frontend: Build and deploy to static hosting
 - Backend: Containerize with Docker and deploy to cloud
 - Database: Managed PostgreSQL service

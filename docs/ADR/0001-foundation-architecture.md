@@ -8,6 +8,7 @@
 ## Context
 
 NijaSpec must:
+
 - enforce spec-to-implementation alignment via generated verification tests,
 - remain resilient to vendor model changes and FX volatility,
 - avoid “vibe-coded” architecture that collapses under growth,
@@ -42,4 +43,3 @@ NijaSpec must:
 - Hosted-first dashboard: rejected for MVP due to operational overhead and security surface area.
 - GraphQL-first API: rejected due to complexity and weaker contract-testing ergonomics versus OpenAPI.
 - Single-language everything: rejected because CLI + provider SDK ecosystem is strongest in Node/TS, while hosted API ergonomics and security controls are strong in FastAPI.
-

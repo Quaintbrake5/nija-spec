@@ -19,14 +19,17 @@
 ## 2) Key Screens
 
 ### 2.1 Landing
+
 - Value proposition: “Specs → tests → proof-of-work”
 - CTA: “Install CLI” + “View sample report”
 
 ### 2.2 Auth
+
 - Sign in (OAuth or magic link)
 - Org selection / creation
 
 ### 2.3 Project Dashboard
+
 - List projects
 - Spec status summary:
   - latest spec version
@@ -34,11 +37,13 @@
   - failing endpoints count
 
 ### 2.4 Spec Viewer
+
 - Render canonical `nijaspec.md`
 - Diff view between versions
 - “Export evidence” button
 
 ### 2.5 Run Report
+
 - Run metadata:
   - prompt version
   - model identifier
@@ -56,6 +61,7 @@
 ## 3) Component System (No Tailwind)
 
 ### 3.1 Tokens (CSS variables)
+
 - Colors: background, surface, border, text, success, warning, danger
 - Typography: font family, sizes, weights
 - Spacing: 4px grid
@@ -63,6 +69,7 @@
 - Shadows: subtle, 2 levels
 
 ### 3.2 Components (initial set)
+
 - `Button`, `Input`, `Select`, `Tag`, `Alert`
 - `Sidebar`, `Topbar`, `Breadcrumbs`
 - `Table` (runs/spec history)
@@ -78,4 +85,3 @@
   - tab order
   - focus ring visible
 - All status indicators must have text labels (not color-only).
-

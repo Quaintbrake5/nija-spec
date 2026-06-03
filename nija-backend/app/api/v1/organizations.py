@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from typing import List, Any
+from app.schemas.organization import OrganizationCreate, OrganizationUpdate
 
 router = APIRouter(prefix="/orgs", tags=["Organizations"])
 
@@ -11,7 +12,7 @@ async def list_orgs():
     return [{"id": "org-1", "name": "Mock Org"}]
 
 @router.post("")
-async def create_org(org_data: Any):
+async def create_org(org_data: OrganizationCreate):
     """
     Create a new organization.
     """
@@ -25,7 +26,7 @@ async def get_org(org_id: str):
     return {"id": org_id, "name": "Mock Org"}
 
 @router.put("/{org_id}")
-async def update_org(org_id: str, org_data: Any):
+async def update_org(org_id: str, org_data: OrganizationUpdate):
     """
     Update organization details.
     """

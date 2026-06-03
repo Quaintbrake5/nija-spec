@@ -12,7 +12,7 @@
 ## Key Architecture Points
 
 - **Trust Engine Pattern**: Critical - LLMs only output structured JSON (reasoning), local deterministic code handles syntax/templates. Never mix LLM output with code generation.
-- **Pipeline Phases**: 
+- **Pipeline Phases**:
   1. Iron Gate (deterministic validation)
   2. Local Semantic Extraction (LLM with 3-strike retry or --skip-llm for mock)
   3. Compliance Gap Analysis (AJV validation)

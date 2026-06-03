@@ -14,6 +14,7 @@ classifiers = [
 
 dependencies = [
     "aiosqlite>=0.22.1",
+    "alembic>=1.18.4",
     "email-validator>=2.3.0",
     "fastapi>=0.136.3",
     "httpx>=0.28.1",
@@ -23,6 +24,7 @@ dependencies = [
     "python-dotenv>=1.2.2",
     "python-jose[cryptography]>=3.5.0",
     "python-multipart>=0.0.30",
+    "prometheus-fastapi-instrumentator>=6.0.0",
     "sqlalchemy>=2.0.50",
     "uvicorn[standard]>=0.48.0",
 ]
@@ -60,6 +62,7 @@ strict = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+addopts = "-ra -q --cov=app --cov-report=term-missing"
 
 [tool.ruff]
 line-length = 88

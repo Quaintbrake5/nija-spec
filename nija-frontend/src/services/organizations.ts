@@ -1,14 +1,8 @@
 import apiService from './api';
-import type { Organization } from '@/types';
+import type { Organization, OrganizationMember, OrganizationRole } from '@/types';
 
 interface CreateOrganizationData {
   name: string;
-}
-
-interface OrganizationMember {
-  userId: string;
-  role: string;
-  joinedAt: string;
 }
 
 export const organizationService = {
@@ -44,7 +38,7 @@ export const organizationService = {
   async addOrganizationMember(
     orgId: string,
     userId: string,
-    role: string
+    role: OrganizationRole
   ): Promise<void> {
     await apiService.post(`/orgs/${orgId}/members`, { userId, role });
   },
@@ -53,7 +47,7 @@ export const organizationService = {
     await apiService.delete(`/orgs/${orgId}/members/${userId}`);
   },
 
-  async updateMemberRole(orgId: string, userId: string, role: string): Promise<void> {
+  async updateMemberRole(orgId: string, userId: string, role: OrganizationRole): Promise<void> {
     await apiService.put(`/orgs/${orgId}/members/${userId}`, { role });
   },
 

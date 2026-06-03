@@ -14,6 +14,7 @@ As of **June 2026**, support for local LLM extraction via Ollama is officially d
 ## Reasons for Deprecation
 
 While local extraction provided privacy and cost benefits, several factors led to this decision:
+
 1. **Extraction Quality**: Local models (e.g., Qwen 2.5) occasionally struggle with complex schema adherence compared to frontier cloud models.
 2. **Operational Overhead**: Requiring users to install and manage a local Ollama instance increased the barrier to entry for new contributors and users.
 3. **Deterministic Testing**: The `MockExtractor` provides a more reliable and faster way to verify compliance logic without the variance of LLM outputs.
@@ -23,14 +24,18 @@ While local extraction provided privacy and cost benefits, several factors led t
 Depending on your use case, choose one of the following alternatives:
 
 ### 1. Transition to Cloud Extraction (Gemini)
+
 If you require high-accuracy semantic extraction of Markdown specifications:
+
 - **Old Command**: `nija-audit generate <spec.md> --endpoint http://localhost:11434/api/generate --model qwen2.5:7b`
 - **New Command**: `nija-audit generate <spec.md> --gemini`
 
 *Note: Ensure you have your Gemini API key configured in your environment variables.*
 
 ### 2. Transition to Mock Extraction
+
 If you are running tests, working in CI/CD, or do not require live LLM reasoning:
+
 - **Old Command**: `nija-audit generate <spec.md> --endpoint http://localhost:11434/api/generate --model qwen2.5:7b` (or similar local setup)
 - **New Command**: `nija-audit generate <spec.md> --skip-llm`
 

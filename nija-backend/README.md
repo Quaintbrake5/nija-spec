@@ -69,10 +69,11 @@ uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 The API will be available at:
-- **API**: http://localhost:8000
-- **Documentation**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
-- **Health Check**: http://localhost:8000/health
+
+- **API**: <http://localhost:8000>
+- **Documentation**: <http://localhost:8000/docs>
+- **ReDoc**: <http://localhost:8000/redoc>
+- **Health Check**: <http://localhost:8000/health>
 
 ### Code Quality
 
@@ -165,6 +166,7 @@ nija-backend/
 ## API Endpoints
 
 ### Authentication
+
 - `POST /api/v1/auth/google/login` - Initiate Google OAuth
 - `GET /api/v1/auth/google/callback` - Google OAuth callback
 - `POST /api/v1/auth/magic-link/send` - Send magic link
@@ -174,6 +176,7 @@ nija-backend/
 - `GET /api/v1/auth/me` - Get current user
 
 ### Organizations
+
 - `GET /api/v1/orgs` - List user's organizations
 - `POST /api/v1/orgs` - Create organization
 - `GET /api/v1/orgs/:orgId` - Get organization details
@@ -181,6 +184,7 @@ nija-backend/
 - `DELETE /api/v1/orgs/:orgId` - Delete organization
 
 ### Projects
+
 - `GET /api/v1/orgs/:orgId/projects` - List organization projects
 - `POST /api/v1/orgs/:orgId/projects` - Create project
 - `GET /api/v1/projects/:projectId` - Get project details
@@ -188,6 +192,7 @@ nija-backend/
 - `DELETE /api/v1/projects/:projectId` - Delete project
 
 ### Specifications
+
 - `GET /api/v1/projects/:projectId/specs` - List project specs
 - `GET /api/v1/specs/:specId` - Get specification
 - `POST /api/v1/specs` - Upload specification
@@ -195,6 +200,7 @@ nija-backend/
 - `GET /api/v1/specs/diff` - Get specification diff
 
 ### Runs
+
 - `GET /api/v1/projects/:projectId/runs` - List project runs
 - `GET /api/v1/runs/:runId` - Get run details
 - `POST /api/v1/runs` - Trigger new run
@@ -252,6 +258,7 @@ uv run alembic downgrade -1
 ### Models
 
 The database includes the following tables:
+
 - `users` - User accounts
 - `organizations` - Multi-tenant organizations
 - `org_memberships` - User-organization relationships with roles

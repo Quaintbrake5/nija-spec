@@ -20,7 +20,9 @@
 ## 2) Workflow Overview
 
 ### 2.1 Pull Request CI (default)
+
 Runs on `pull_request`:
+
 - install dependencies (Node and Python)
 - lint / typecheck / unit tests
 - run `nija-audit estimate` (cost preview) as an informational step
@@ -29,11 +31,14 @@ Runs on `pull_request`:
 - upload artifacts
 
 Security posture:
+
 - `permissions: read-all` (or tighter)
 - never pushes commits back to the branch
 
 ### 2.2 Main Branch CI
+
 Runs on `push` to `main`:
+
 - same checks as PR
 - optional:
   - publish CLI package
@@ -45,15 +50,19 @@ Runs on `push` to `main`:
 ## 3) Secrets & Configuration
 
 ### 3.1 Required Secrets (if using cloud LLMs in CI)
+
 - `GEMINI_API_KEY` (or provider equivalent)
 
 Recommendation:
+
 - CI should be able to run without cloud keys by using:
   - local adapters (not available in GitHub runners), or
   - “verification-only mode” where generated tests are committed and CI only runs them.
 
 ### 3.2 Artifact Retention
+
 Store artifacts for traceability:
+
 - `.nija-audit/run-manifest.json`
 - generated tests (if generated in CI)
 - failure logs / structured summaries
@@ -65,12 +74,14 @@ Store artifacts for traceability:
 Auto-modifying code from CI is high risk.
 
 If you want “self-healing”:
+
 - only allow it on:
   - trusted branches (not forks)
   - manually triggered workflows (`workflow_dispatch`)
 - require human review before merge
 
 Recommended pattern:
+
 - CI generates a patch diff artifact instead of pushing commits.
 
 ---
@@ -124,4 +135,3 @@ jobs:
           cd apps/cli
           node dist/cli.js verify --spec ../../nija-audit.md
 ```
-

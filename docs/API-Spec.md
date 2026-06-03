@@ -2,21 +2,13 @@
 
 > **Status: Planned (V1+)** — This API does not exist yet. The current product is a CLI-only tool.
 
-
-
 **Doc status:** Draft (v0.1)  
 
 **Last updated:** 2026-05-23  
 
-
-
 ---
 
-
-
 ## 1) Goals
-
-
 
 - Provide a stable, auditable API surface for hosted NijaSpec (orgs/projects/specs/runs/artifacts).
 
@@ -24,15 +16,9 @@
 
 - Keep REST semantics predictable and versioned.
 
-
-
 ---
 
-
-
 ## 2) API Style Decisions
-
-
 
 - **Protocol:** HTTPS only
 
@@ -48,23 +34,15 @@
 
 - **Errors:** consistent envelope with `code`, `message`, `requestId`
 
-
-
 ---
 
-
-
 ## 3) AuthN/AuthZ
-
-
 
 ### 3.1 Authentication (recommended)
 
 - Hosted UI: OAuth (Google) or magic-link → server issues session tokens
 
 - CLI: Personal Access Tokens (PAT) + scoped API keys (project-scoped)
-
-
 
 ### 3.2 Authorization
 
@@ -74,27 +52,17 @@
 
 - Default-deny on every endpoint.
 
-
-
 ### 3.3 Headers
 
 - `Authorization: Bearer <token>`
 
 - `X-Request-Id: <uuid>` (optional; server generates if missing)
 
-
-
 ---
-
-
 
 ## 4) Core Resources
 
-
-
 ### 4.1 Organizations
-
-
 
 - `GET /api/v1/orgs`
 
@@ -103,8 +71,6 @@
 - `GET /api/v1/orgs/{orgId}`
 
 - `PATCH /api/v1/orgs/{orgId}`
-
-
 
 Payload shape (example):
 
@@ -122,11 +88,7 @@ Payload shape (example):
 
 ```
 
-
-
 ### 4.2 Users + Memberships
-
-
 
 - `GET /api/v1/me`
 
@@ -138,11 +100,7 @@ Payload shape (example):
 
 - `DELETE /api/v1/orgs/{orgId}/members/{userId}`
 
-
-
 ### 4.3 Projects
-
-
 
 - `GET /api/v1/orgs/{orgId}/projects`
 
@@ -153,8 +111,6 @@ Payload shape (example):
 - `PATCH /api/v1/projects/{projectId}`
 
 - `DELETE /api/v1/projects/{projectId}` (soft-delete recommended)
-
-
 
 Project fields (example):
 
@@ -176,23 +132,15 @@ Project fields (example):
 
 ```
 
-
-
 ### 4.4 Specs (versioned)
 
-
-
 Specs are immutable once created; new versions are new rows.
-
-
 
 - `GET /api/v1/projects/{projectId}/specs`
 
 - `POST /api/v1/projects/{projectId}/specs`
 
 - `GET /api/v1/specs/{specId}`
-
-
 
 Create spec (example):
 
@@ -209,8 +157,6 @@ Create spec (example):
 }
 
 ```
-
-
 
 Response (example):
 
@@ -232,15 +178,9 @@ Response (example):
 
 ```
 
-
-
 ### 4.5 Prompt Versions
 
-
-
 Prompts are tracked as immutable versions for auditability.
-
-
 
 - `GET /api/v1/projects/{projectId}/prompts`
 
@@ -248,15 +188,9 @@ Prompts are tracked as immutable versions for auditability.
 
 - `GET /api/v1/prompts/{promptVersionId}`
 
-
-
 ### 4.6 Runs
 
-
-
 Run = a generation/verification execution event with attached artifacts + manifest.
-
-
 
 - `GET /api/v1/projects/{projectId}/runs`
 
@@ -265,8 +199,6 @@ Run = a generation/verification execution event with attached artifacts + manife
 - `GET /api/v1/runs/{runId}`
 
 - `POST /api/v1/runs/{runId}/cancel`
-
-
 
 Run fields (example):
 
@@ -298,29 +230,19 @@ Run fields (example):
 
 ```
 
-
-
 Status values:
 
 - `QUEUED`, `RUNNING`, `SUCCEEDED`, `FAILED`, `CANCELED`
 
-
-
 ### 4.7 Artifacts
 
-
-
 Artifacts are immutable references to outputs from a run (logs, manifests, generated tests).
-
-
 
 - `GET /api/v1/runs/{runId}/artifacts`
 
 - `GET /api/v1/artifacts/{artifactId}`
 
 - `POST /api/v1/artifacts/{artifactId}/download-url` (pre-signed URL)
-
-
 
 Artifact fields (example):
 
@@ -346,35 +268,21 @@ Artifact fields (example):
 
 ```
 
-
-
 Artifact kind values (initial):
 
 - `RUN_MANIFEST`, `GENERATED_TESTS`, `FAILURE_LOG`, `RAW_OUTPUT` (discouraged), `PATCH_DIFF`
 
-
-
 ---
 
-
-
 ## 5) Idempotency & Concurrency
-
-
 
 - `POST /api/v1/projects/{projectId}/specs` accepts optional `Idempotency-Key`.
 
 - Run creation should be idempotent by `(projectId, specId, promptVersionId, mode)` with a time window, to prevent duplicate runs from CI retries.
 
-
-
 ---
 
-
-
 ## 6) Error Format (example)
-
-
 
 ```json
 
@@ -390,15 +298,9 @@ Artifact kind values (initial):
 
 ```
 
-
-
 ---
 
-
-
 Additional error examples:
-
-
 
 ```json
 
@@ -414,8 +316,6 @@ Additional error examples:
 
 ```
 
-
-
 ```json
 
 {
@@ -429,8 +329,6 @@ Additional error examples:
 }
 
 ```
-
-
 
 ```json
 
@@ -446,11 +344,7 @@ Additional error examples:
 
 ```
 
-
-
 ## 7) Security Requirements (API)
-
-
 
 - Rate limiting per token + per IP (hosted mode).
 
@@ -459,12 +353,6 @@ Additional error examples:
 - No raw secrets stored in specs, prompts, or artifacts.
 
 - Artifact downloads via short-lived pre-signed URLs only.
-
-
-
-
-
-
 
 ---
 

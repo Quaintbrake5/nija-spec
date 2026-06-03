@@ -8,6 +8,7 @@
 ## 1) Philosophy
 
 NijaSpec must prove reliability because it generates enforcement artifacts (tests). Testing focuses on:
+
 - determinism (as much as feasible),
 - safety (no secret leakage),
 - correctness of compilation and validation steps,
@@ -18,6 +19,7 @@ NijaSpec must prove reliability because it generates enforcement artifacts (test
 ## 2) Test Layers
 
 ### 2.1 Unit Tests (CLI / packages)
+
 - Spec parser/compiler:
   - raw input → intermediate schema (Phase 1 output validation)
   - intermediate schema → `nijaspec.md` (Phase 2 formatting invariants)
@@ -28,17 +30,20 @@ NijaSpec must prove reliability because it generates enforcement artifacts (test
   - fallback logic in `LLMManager`
 
 ### 2.2 Contract Tests
+
 - Ensure generated tests always include mandatory checks:
   - webhook signature headers for fintech gateways
   - auth boundaries when specified
 
 ### 2.3 Golden File Tests
+
 - Given a fixed input spec, generated output must match a committed snapshot:
   - `nijaspec.md`
   - test scaffold file
 - Store prompt versions with snapshots.
 
 ### 2.4 Integration Tests (Optional later)
+
 - Run the generated tests against a seeded sample API implementation.
 - Validate CI artifacts and run manifests.
 
@@ -60,4 +65,3 @@ NijaSpec must prove reliability because it generates enforcement artifacts (test
 - Node 20 (CLI)
 - Python 3.12 (API, if introduced)
 - OS: ubuntu-latest for CI baseline
-

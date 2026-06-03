@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     HOST: str = "0.0.0.0"
-    PORT: int = 8000
+    PORT: int = 8001
 
     DATABASE_URL: str = "sqlite+aiosqlite:///./nijaspec.db"
     SECRET_KEY: str = "dev-secret-key-change-in-production"

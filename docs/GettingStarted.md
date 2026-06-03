@@ -16,12 +16,14 @@ NijaSpec is a **spec-as-truth** toolchain that converts human requirements into 
 ### Core Concepts
 
 #### The Trust Engine Architecture
+
 NijaSpec uses a unique architectural approach called the **Trust Engine** that eliminates LLM code generation risks:
 
 1. **Phase 1 - Cloud Reasoning**: LLM extracts semantic meaning from requirements and outputs structured JSON
 2. **Phase 2 - Local Deterministic Processing**: Local system converts JSON to syntactically-perfect test code using templates
 
 This separation ensures:
+
 - ✅ 100% syntax correctness (no hallucinated code errors)
 - ✅ Deterministic output (same input → same output)
 - ✅ 40-60% token reduction (LLM only outputs data, not boilerplate)
@@ -30,9 +32,11 @@ This separation ensures:
 ### Quick Start
 
 #### Prerequisites
+
 - Node.js (v18+)
 
 #### Installation
+
 ```bash
 git clone <repository-url>
 cd NaijaSpec
@@ -42,21 +46,25 @@ npm install
 #### Basic Workflow
 
 1. **Run an audit with mock extractor** (no Ollama needed)
+
    ```bash
    npm run check -- test-spec.md --skip-llm
    ```
 
 2. **Run an audit with cloud extraction** (requires Gemini API key)
+
    ```bash
    npm run check -- test-spec.md --gemini
    ```
 
 3. **View generated patches**
+
    ```bash
    cat .nija/patches/BREACH-002-fix.md
    ```
 
 4. **Run the test suite**
+
    ```bash
    npm test
    ```

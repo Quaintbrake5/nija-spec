@@ -16,6 +16,7 @@ To keep the project “startup-grade” (not brittle), treat the system as **thr
 3. **API (FastAPI)** — auth, org/project management, run history, billing hooks (optional v1+).
 
 > **Implementation Status:**
+>
 > - ✅ CLI (Node/TypeScript) — Implemented
 > - 🟡 Web (React + Vite) — In Progress (nija-frontend)
 > - 🟡 API (FastAPI) — In Progress (nija-backend)
@@ -37,6 +38,7 @@ To keep the project “startup-grade” (not brittle), treat the system as **thr
 ```
 
 Rationale:
+
 - CLI is best kept in TS due to existing adapter/interface design and LLM SDK ecosystem.
 - FastAPI is used for a future hosted product without forcing it into the MVP.
 
@@ -45,11 +47,13 @@ Rationale:
 ## 3) API Style Recommendation
 
 ### Default: REST + OpenAPI (recommended)
+
 - FastAPI natively generates OpenAPI.
 - Stable for tooling, CI checks, and contract testing.
 - Matches the “spec as contract” concept well.
 
 ### Optional later: GraphQL (selective)
+
 - Only if the dashboard requires complex querying across runs/specs/projects.
 - Keep REST for auth, billing, webhooks, and command execution endpoints.
 
@@ -58,6 +62,7 @@ Rationale:
 ## 4) Data Model (Hosted Mode, Optional)
 
 ### Primary entities
+
 - `orgs`
 - `users`
 - `projects`
@@ -67,10 +72,12 @@ Rationale:
 - `prompt_versions`
 
 ### Database
+
 - **PostgreSQL** (recommended)
   - strong consistency, relational audit trail, good for reporting.
 
 ### Migrations
+
 - Alembic for FastAPI service.
 
 ---
@@ -78,17 +85,20 @@ Rationale:
 ## 5) Authentication & Authorization
 
 ### Auth (hosted mode)
+
 - OAuth + email login (e.g., Google) OR passwordless magic link.
 - Session strategy:
   - short-lived access token + refresh token rotation
 - Store refresh token hashes only.
 
 ### Authorization
+
 - RBAC per org/project:
   - `OWNER`, `MAINTAINER`, `REVIEWER`, `VIEWER`
 - Default-deny across all endpoints.
 
 ### CLI Authentication (hosted mode)
+
 - Device-code flow or API tokens scoped per project.
 
 ---
@@ -96,6 +106,7 @@ Rationale:
 ## 6) Caching & Performance
 
 ### CLI
+
 - Local caching of:
   - token estimates (by content hash)
   - intermediate schemas
@@ -103,6 +114,7 @@ Rationale:
   - run manifests
 
 ### API (hosted mode)
+
 - Redis for:
   - rate limiting
   - short-lived run status caching
@@ -115,6 +127,7 @@ Rationale:
 Do **not** run untrusted code in the API service process.
 
 Recommended approach:
+
 - Dedicated worker(s) + sandboxed runners:
   - containerized jobs (Kubernetes / Nomad later)
   - or a dedicated “runner” service
@@ -127,20 +140,23 @@ Recommended approach:
 ## 8) Security Posture (Baseline)
 
 ### LLM Safety
+
 - Never send secrets in prompts.
 - Redact known secret patterns before transmitting.
 - Require explicit user opt-in before uploading repo files.
 
 ### CI Safety
+
 - Default to read-only permissions in PR workflows.
 - No “auto-commit back to PR branch” unless restricted to trusted branches/users.
 
 ### Supply Chain
+
 - Lockfiles enforced (`package-lock.json` / `pnpm-lock.yaml`).
 - Dependabot enabled (later).
 
 ### API Hardening (hosted mode)
+
 - Rate limiting per token and per IP.
 - Audit logging for spec/run access.
 - Strict CORS, CSRF protections (for cookie flows).
-

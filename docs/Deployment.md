@@ -19,12 +19,14 @@
 ## 2) Environments
 
 ### 2.1 Standard Environments
+
 - **Local** (developer workstation)
 - **CI** (GitHub Actions)
 - **Staging** (hosted mode)
 - **Production** (hosted mode)
 
 ### 2.2 Configuration Rules
+
 - All environment config uses explicit env vars (no magic defaults in prod).
 - Never store secrets in git.
 - Explicit "provider mode" selection:
@@ -35,12 +37,14 @@
 ## 3) CLI Deployment
 
 ### 3.1 Packaging
+
 - Node/TypeScript compiled build output: `dist/`
 - Distribution options:
   - npm package (recommended)
   - standalone binaries later (optional)
 
 ### 3.2 CLI Config
+
 - Local config file: `nijaspec.config.json` (non-secret settings)
 - Secret keys:
   - env vars (e.g., `GEMINI_API_KEY`)
@@ -51,9 +55,11 @@
 ## 4) Web Deployment (Optional v1+)
 
 ### 4.1 Artifact
+
 - Static build output (`dist/` from Vite)
 
 ### 4.2 Hosting
+
 - Any static host is acceptable (keep provider-agnostic).
 - If using cookies/sessions with the API, ensure:
   - HTTPS-only
@@ -65,12 +71,14 @@
 ## 5) API Deployment (Optional v1+)
 
 ### 5.1 Runtime
+
 - FastAPI behind a reverse proxy / load balancer
 - Run with:
   - `uvicorn` for dev
   - `gunicorn`+`uvicorn` worker class for prod (recommended)
 
 ### 5.2 Containers
+
 - Build a Docker image for `apps/api`
 - Run with:
   - non-root user
@@ -78,6 +86,7 @@
   - pinned dependencies
 
 ### 5.3 Database
+
 - PostgreSQL (managed or self-hosted)
 - Migrations via Alembic
 - Backups:
@@ -85,6 +94,7 @@
   - tested restore procedure
 
 ### 5.4 Caching / Rate Limiting
+
 - Redis for:
   - rate limiting
   - short-lived cache
@@ -95,12 +105,14 @@
 ## 6) Secrets Management
 
 ### 6.1 Required Secrets (examples)
+
 - LLM provider keys: `GEMINI_API_KEY` (and later equivalents)
 - DB: `DATABASE_URL`
 - Redis: `REDIS_URL`
 - Auth provider secrets (OAuth) if used
 
 ### 6.2 Rotation
+
 - Keys must be rotatable without downtime.
 - Documented in `Runbooks.md`.
 
@@ -109,11 +121,13 @@
 ## 7) CI/CD Deployment Strategy (Hosted mode)
 
 ### 7.1 Build Steps
+
 - Web: lint → typecheck → build
 - API: lint → unit tests → container build
 - CLI: lint → unit tests → build → publish (main-only)
 
 ### 7.2 Releases
+
 - Semantic versioning for CLI.
 - Tag releases in git.
 
@@ -124,7 +138,7 @@
 Do not run untrusted code inside the API process.
 
 When hosted verification is introduced:
+
 - use dedicated workers and isolated runners
 - store artifacts in object storage
 - limit run concurrency per org/project
-

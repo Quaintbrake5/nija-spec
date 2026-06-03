@@ -16,6 +16,12 @@ export interface AuthState {
 // Organization types
 export type OrganizationRole = 'OWNER' | 'MAINTAINER' | 'REVIEWER' | 'VIEWER';
 
+export interface OrganizationMember {
+  userId: string;
+  role: OrganizationRole;
+  joinedAt: string;
+}
+
 export interface Organization {
   id: string;
   name: string;
@@ -108,6 +114,12 @@ export interface Artifact {
   sha256: string;
   storageKey: string;
   createdAt: string;
+}
+
+export interface RunTimelineEntry {
+  status: RunStatus;
+  timestamp: string;
+  message?: string;
 }
 
 // Check result types

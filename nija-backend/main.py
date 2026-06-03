@@ -1,10 +1,16 @@
 import uvicorn
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.api.v1.router import api_router
+from app.middleware.security import setup_security_middleware
+from app.middleware.rate_limit import RateLimitMiddleware
+from app.monitoring.logging_config import setup_logging
+from app.monitoring.metrics import setup_metrics
+
+# Initialize logging
+setup_logging()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -22,14 +28,14 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Configure CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Configure Metrics
+setup_metrics(app)
+
+# Configure Security Headers and CORS
+setup_security_middleware(app)
+
+# Configure Rate Limiting
+app.add_middleware(RateLimitMiddleware)
 
 # Include API routers
 app.include_router(api_router, prefix="/api/v1")
@@ -44,8 +50,18 @@ async def health_check() -> dict[str, str]:
 
 if __name__ == "__main__":
     uvicorn.run(
-        "main:app", 
-        host=settings.HOST, 
-        port=settings.PORT, 
-        reload=settings.DEBUG
+        "main:app",
+        host=settings.HOST,
+        port=settings.PORT,
+        reload=settings.DEBUG,
+        reload_excludes=[
+            "nija_backend.log",
+            "*.log",
+            "__pycache__",
+            "*.pyc",
+            ".env",
+            "*.env",
+            ".git",
+            "nija-backend/.venv/**"
+        ]
     )

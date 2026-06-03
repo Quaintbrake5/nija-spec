@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from typing import List, Any
+from app.schemas.specification import SpecificationCreate, SpecificationUpdate
 
 router = APIRouter(tags=["Specifications"])
 
@@ -10,6 +11,13 @@ async def list_specs(project_id: str):
     """
     return [{"id": "spec-1", "name": "Mock Spec", "project_id": project_id}]
 
+@router.get("/specs/diff")
+async def get_spec_diff(spec_id_1: str, spec_id_2: str):
+    """
+    Get difference between two specifications.
+    """
+    return {"diff": "Mock diff content"}
+
 @router.get("/specs/{spec_id}")
 async def get_spec(spec_id: str):
     """
@@ -18,22 +26,15 @@ async def get_spec(spec_id: str):
     return {"id": spec_id, "name": "Mock Spec"}
 
 @router.post("/specs")
-async def create_spec(spec_data: Any):
+async def create_spec(spec_data: SpecificationCreate):
     """
     Create a new specification.
     """
     return {"id": "spec-1", "name": "Mock Spec"}
 
 @router.put("/specs/{spec_id}")
-async def update_spec(spec_id: str, spec_data: Any):
+async def update_spec(spec_id: str, spec_data: SpecificationUpdate):
     """
     Update specification details.
     """
     return {"id": spec_id, "name": "Updated Mock Spec"}
-
-@router.get("/specs/diff")
-async def get_spec_diff(spec_id_1: str, spec_id_2: str):
-    """
-    Get difference between two specifications.
-    """
-    return {"diff": "Mock diff content"}

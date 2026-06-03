@@ -5,6 +5,7 @@ This document provides quick setup instructions for the NijaSpec web dashboard i
 ## Quick Start
 
 ### Prerequisites
+
 - Node.js 18+
 - Python 3.11+
 - UV package manager
@@ -25,7 +26,7 @@ npm install
 npm run dev
 ```
 
-Frontend will be available at: http://localhost:5173
+Frontend will be available at: <http://localhost:5173>
 
 ### 3. Backend Setup
 
@@ -46,12 +47,13 @@ uv sync
 uv run python main.py
 ```
 
-Backend will be available at: http://localhost:8000
-API documentation at: http://localhost:8000/docs
+Backend will be available at: <http://localhost:8000>
+API documentation at: <http://localhost:8000/docs>
 
 ## Development Commands
 
 ### Frontend (nija-frontend/)
+
 ```bash
 npm run dev          # Start development server
 npm run build        # Build for production
@@ -63,6 +65,7 @@ npm run type-check   # Type check
 ```
 
 ### Backend (nija-backend/)
+
 ```bash
 uv run python main.py        # Start development server
 uv run pytest               # Run tests
@@ -100,6 +103,7 @@ NaijaSpec/
 ## Key Features
 
 ### Frontend
+
 - React 19 with TypeScript
 - Vite for fast development
 - TanStack Query for server state
@@ -109,6 +113,7 @@ NaijaSpec/
 - WCAG 2.1 AA accessibility
 
 ### Backend
+
 - FastAPI with Python 3.11+
 - UV package manager
 - SQLAlchemy ORM
@@ -119,18 +124,21 @@ NaijaSpec/
 ## API Integration
 
 The frontend proxies API requests to the backend:
-- Frontend: http://localhost:5173
-- Backend: http://localhost:8000
+
+- Frontend: <http://localhost:5173>
+- Backend: <http://localhost:8000>
 - API Proxy: `/api` → `http://localhost:8000/api`
 
 ## Environment Configuration
 
 ### Frontend (.env)
+
 ```env
 VITE_API_BASE_URL=http://localhost:8000/api
 ```
 
 ### Backend (.env)
+
 ```env
 # Copy from .env.example
 cp .env.example .env
@@ -144,6 +152,7 @@ GOOGLE_CLIENT_ID=your-google-client-id
 ## Testing
 
 ### Frontend Tests
+
 ```bash
 cd nija-frontend
 npm test                    # Run all tests
@@ -152,6 +161,7 @@ npm run test:coverage      # With coverage
 ```
 
 ### Backend Tests
+
 ```bash
 cd nija-backend
 uv run pytest              # Run all tests
@@ -162,11 +172,13 @@ uv run pytest --cov=app    # With coverage
 ## Code Quality
 
 ### Frontend
+
 - ESLint for linting
 - Prettier for formatting
 - TypeScript for type safety
 
 ### Backend
+
 - Black for formatting
 - isort for import sorting
 - mypy for type checking
@@ -175,6 +187,7 @@ uv run pytest --cov=app    # With coverage
 ## Deployment
 
 ### Frontend
+
 ```bash
 cd nija-frontend
 npm run build
@@ -182,6 +195,7 @@ npm run build
 ```
 
 ### Backend
+
 ```bash
 cd nija-backend
 docker build -t nija-backend .

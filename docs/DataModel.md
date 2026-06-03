@@ -27,6 +27,7 @@
 ## 3) Tables (Proposed)
 
 ### 3.1 `users`
+
 - `id` (uuid, pk)
 - `email` (citext, unique)
 - `name` (text)
@@ -34,23 +35,28 @@
 - `created_at` (timestamptz)
 
 Indexes:
+
 - unique on `email`
 
 ### 3.2 `orgs`
+
 - `id` (uuid, pk)
 - `name` (text)
 - `created_at` (timestamptz)
 
 ### 3.3 `org_memberships`
+
 - `org_id` (uuid, fk → orgs.id)
 - `user_id` (uuid, fk → users.id)
 - `role` (text) — `OWNER|MAINTAINER|REVIEWER|VIEWER`
 - `created_at` (timestamptz)
 
 Constraints:
+
 - pk (`org_id`, `user_id`)
 
 ### 3.4 `projects`
+
 - `id` (uuid, pk)
 - `org_id` (uuid, fk)
 - `name` (text)
@@ -59,9 +65,11 @@ Constraints:
 - `created_at` (timestamptz)
 
 Indexes:
+
 - unique (`org_id`, `slug`)
 
 ### 3.5 `specs`
+
 Specs are immutable; `version` increments per project.
 
 - `id` (uuid, pk)
@@ -74,13 +82,16 @@ Specs are immutable; `version` increments per project.
 - `created_at` (timestamptz)
 
 Indexes:
+
 - unique (`project_id`, `version`)
 - unique (`project_id`, `spec_hash`)
 
 Note:
+
 - For larger specs, prefer object storage (`content_storage_key`) and keep markdown out of Postgres.
 
 ### 3.6 `prompt_versions`
+
 Prompts are immutable and auditable.
 
 - `id` (uuid, pk)
@@ -93,9 +104,11 @@ Prompts are immutable and auditable.
 - `created_at` (timestamptz)
 
 Indexes:
+
 - (`project_id`, `name`, `version`) unique
 
 ### 3.7 `api_tokens` (for CLI)
+
 - `id` (uuid, pk)
 - `org_id` (uuid, fk)
 - `project_id` (uuid, fk, nullable)
@@ -107,10 +120,12 @@ Indexes:
 - `created_at` (timestamptz)
 
 Indexes:
+
 - (`org_id`, `project_id`)
 - (`token_hash`) unique
 
 ### 3.8 `runs`
+
 Runs are append-only; status updates are recorded, but core identity is immutable.
 
 - `id` (uuid, pk)
@@ -131,11 +146,13 @@ Runs are append-only; status updates are recorded, but core identity is immutabl
 - `created_at` (timestamptz)
 
 Indexes:
+
 - (`project_id`, `created_at` desc)
 - (`spec_id`)
 - (`status`)
 
 ### 3.9 `run_events` (optional, but recommended)
+
 Audit the status transitions and important milestones.
 
 - `id` (uuid, pk)
@@ -145,9 +162,11 @@ Audit the status transitions and important milestones.
 - `created_at` (timestamptz)
 
 Indexes:
+
 - (`run_id`, `created_at`)
 
 ### 3.10 `artifacts`
+
 Artifact metadata; payload is stored in object storage.
 
 - `id` (uuid, pk)
@@ -161,6 +180,7 @@ Artifact metadata; payload is stored in object storage.
 - `created_at` (timestamptz)
 
 Indexes:
+
 - (`run_id`)
 - (`project_id`, `created_at` desc)
 - (`sha256`)
@@ -170,6 +190,7 @@ Indexes:
 ## 4) Retention Policy (Hosted Mode)
 
 Recommended defaults (configurable per org):
+
 - Runs:
   - keep metadata indefinitely (or 12–24 months)
 - Artifacts:
@@ -186,4 +207,3 @@ Recommended defaults (configurable per org):
 - Partition `runs` and `artifacts` by time if volumes grow (monthly partitions).
 - Use object storage lifecycle rules for artifact cleanup.
 - Keep `spec_hash` + `prompt_hash` to deduplicate identical content.
-
