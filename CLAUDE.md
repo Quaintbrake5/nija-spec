@@ -5,6 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Common Commands
 
 ### Backend Development
+
 - Build: `npm run build`
 - Dev mode: `npm run dev` (runs ts-node bin/nija.ts)
 - Test: `npm test` (runs all Jest tests)
@@ -19,6 +20,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Show help: `nija-audit --help`
 
 ### Frontend Development
+
 - Dev server: `npm run dev` (from nija-frontend directory)
 - Build for production: `npm run build` (from nija-frontend directory)
 - Preview production build: `npm run preview` (from nija-frontend directory)
@@ -32,13 +34,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Architecture & Structure
 
 ### High-Level Design: The Trust Engine
+
 NijaSpec follows the **Trust Engine** pattern to ensure deterministic and syntactically correct code generation:
+
 1. **Iron Gate**: Parse Markdown, sanitize credentials, validate required sections.
 2. **Local Semantic Extraction**: Gemini or MockExtractor (offline/CI) extracts structured JSON.
 3. **Compliance Gap Analysis**: AJV schema validation + Breach Detection Matrix (NDPA/CBN rules).
 4. **Remediation**: Template-based patches and test scaffolding written to `.nija/patches/`.
 
 ### Project Structure
+
 ```
 bin/nija.ts                              CLI entry point — orchestrates the full pipeline
 src/
@@ -71,6 +76,7 @@ nija-frontend/                           React-based web dashboard
 ```
 
 ### Tech Stack
+
 - **Backend CLI**: TypeScript, Node.js, Jest, AJV (schema validation)
 - **Backend LLMs**: Ollama/Qwen (local), MockExtractor (offline/CI), Gemini (cloud) — all via LLMProvider interface with fallback
 - **Backend Testing**: Jest with ts-jest

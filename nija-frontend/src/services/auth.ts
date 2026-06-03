@@ -14,8 +14,33 @@ interface MagicLinkResponse {
 
 export const authService = {
   async loginWithGoogle(): Promise<void> {
-    // Redirect to Google OAuth
-    globalThis.location.href = `${import.meta.env.VITE_API_BASE_URL || '/api'}/auth/google/login`;
+    // First check if Google OAuth is configured by making a request to the endpoint
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/auth/google/login`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      // If the response indicates Google OAuth is not configured, use mock authentication
+      if (data.mock) {
+        console.warn('Google OAuth is not configured:', data.message);
+        // For development, simulate a successful OAuth callback with mock data
+        console.log('Using mock Google authentication for development...');
+        await this.handleGoogleCallback('mock-auth-code-12345');
+        return;
+      }
+
+      // If we get here, redirect to the Google OAuth URL
+      globalThis.location.href = `${import.meta.env.VITE_API_BASE_URL || '/api'}/auth/google/login`;
+    } catch (error) {
+      console.error('Error checking Google OAuth configuration:', error);
+      // Fallback to direct redirect
+      globalThis.location.href = `${import.meta.env.VITE_API_BASE_URL || '/api'}/auth/google/login`;
+    }
   },
 
   async handleGoogleCallback(code: string): Promise<AuthTokens> {
