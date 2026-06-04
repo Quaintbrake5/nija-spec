@@ -225,7 +225,9 @@ HOST="0.0.0.0"
 PORT=8000
 
 # Database
-DATABASE_URL="postgresql://user:password@localhost:5432/nijaspec"
+# For Docker: uses port 5433 (mapped from container's 5432)
+# For local development: change to port 5432 if using local PostgreSQL
+DATABASE_URL="postgresql+asyncpg://user:password@localhost:5433/nijaspec"
 
 # JWT
 SECRET_KEY="your-secret-key"

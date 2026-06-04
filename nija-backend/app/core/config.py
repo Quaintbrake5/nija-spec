@@ -11,9 +11,10 @@ class Settings(BaseSettings):
     HOST: str = "0.0.0.0"
     PORT: int = 8001
 
-    DATABASE_URL: str = "sqlite+aiosqlite:///./nijaspec.db"
+    DATABASE_URL: str = "postgresql+asyncpg://postgres:{{DB_PASSWORD}}@localhost:5433/nijaspec"
+    REDIS_URL: str = "redis://localhost:6379"
     SECRET_KEY: str = "dev-secret-key-change-in-production"
-    
+
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     

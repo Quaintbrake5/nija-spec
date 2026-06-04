@@ -1,8 +1,10 @@
 import uvicorn
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from sqlalchemy import text
 
 from app.core.config import settings
+from app.core.database import engine
 from app.api.v1.router import api_router
 from app.middleware.security import setup_security_middleware
 from app.middleware.rate_limit import RateLimitMiddleware
@@ -17,9 +19,20 @@ async def lifespan(app: FastAPI):
     """
     Lifespan handler for startup and shutdown events.
     """
-    # Startup logic here (e.g., database connection)
+    # Startup: Test database connection
+    try:
+        async with engine.connect() as conn:
+            await conn.execute(text("SELECT 1"))
+        print("Database connection successful")
+    except Exception as e:
+        print(f"Database connection failed: {e}")
+        raise
+
     yield
-    # Shutdown logic here (e.g., closing database connection)
+
+    # Shutdown: Close database connection
+    await engine.dispose()
+    print("Database connection closed")
 
 app = FastAPI(
     title=settings.APP_NAME,

@@ -1,4 +1,4 @@
-## Description
+# Description
 
 Brief description of what this PR does.
 
@@ -13,6 +13,7 @@ Brief description of what this PR does.
 ## How Has This Been Tested?
 
 Describe the tests you ran to verify your changes:
+
 - `npm test`
 - `npm run typecheck`
 - Manual testing with `npm run check -- test-spec.md --skip-llm`

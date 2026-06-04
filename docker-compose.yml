@@ -1,6 +1,34 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:15
+    container_name: nija-postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=XLR8*xlr8&
+      - POSTGRES_DB=nijaspec
+    ports:
+      # Map container port 5432 to host port 5433
+      # Change to "5432:5432" if you prefer standard port
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
   nija-backend:
     build:
       context: ./nija-backend
@@ -10,11 +38,13 @@ services:
     env_file:
       - .env
     environment:
-      - DATABASE_URL=sqlite+aiosqlite:///./data/nijaspec.db
-    volumes:
-      - nija_data:/app/data
+      # Connect to PostgreSQL on port 5433 (mapped from container's 5432)
+      - DATABASE_URL=postgresql+asyncpg://postgres:XLR8*xlr8&@localhost:5433/nijaspec
     ports:
       - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
     deploy:
       resources:
         limits:
@@ -57,4 +87,4 @@ services:
       start_period: 10s
 
 volumes:
-  nija_data:
+  postgres_data:
